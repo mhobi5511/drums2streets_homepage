@@ -3,6 +3,9 @@ import logoImage from './assets/D2S_Logo-01.jpg'
 import heroImage from './assets/D2S Wild West.jpg'
 import saloonImage from './assets/D2S Saloon.jpg'
 import shovelImage from './assets/D2S Wild West Shovel.jpg'
+import banjoVolcanoImage from './assets/Drums2streets_Banjo Volcano.jpg'
+import supertalentImage from './assets/Supertalent D2S Abschlag.jpg'
+import heroVideo from './assets/D2S bei _Das Supertalent_ 2017.mp4'
 import andrinImage from './assets/Andrin Baer sepia.jpg'
 import angeloImage from './assets/Angelo Razzino sepia.jpg'
 import danielImage from './assets/Daniel Rothammer sepia.jpg'
@@ -89,9 +92,13 @@ const members: Member[] = [
   { name: 'Timon Willi', image: timonImage },
 ]
 
-const portraitMembers = members.filter(
-  (member): member is Member & { image: string } => Boolean(member.image),
-)
+const groupGalleryImages = [
+  supertalentImage,
+  banjoVolcanoImage,
+  heroImage,
+  saloonImage,
+  shovelImage,
+]
 
 const mandatoryFields = [
   'First Name',
@@ -357,11 +364,16 @@ function App() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
       <section className="relative min-h-[92svh] border-b border-white/10">
-        <img
-          src={heroImage}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-50"
-        />
+        <video
+          className="absolute inset-0 h-full w-full object-cover opacity-60"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={heroImage}
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#070707]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_72%,rgba(47,125,202,0.36),transparent_34%),radial-gradient(circle_at_78%_22%,rgba(21,90,159,0.32),transparent_30%)]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#070707] to-transparent" />
@@ -510,22 +522,24 @@ function App() {
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             eyebrow="Galerie"
-            title="Live-Momente, Bühnenenergie und Gesichter der Show."
-            text="Die Galerie zeigt die Gesichter hinter der Performance. Weitere Portraits können ergänzt werden, sobald die Bilder vorliegen."
+            title="Live-Momente, Bühnenenergie und grosse Bilder."
+            text="Die Galerie zeigt Gruppen- und Showfotos aus verschiedenen Auftritten. Einzelportraits bleiben bewusst in der Crew-Sektion."
           />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {portraitMembers.map((member) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {groupGalleryImages.map((image, index) => (
               <div
-                className="relative aspect-[3/4] overflow-hidden rounded-lg border border-white/10 bg-stone-900"
-                key={member.name}
+                className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 bg-stone-900"
+                key={image}
               >
                 <img
-                  src={member.image}
-                  alt={member.name}
+                  src={image}
+                  alt={`Drums2Streets Gruppenfoto ${index + 1}`}
                   className="h-full w-full object-cover opacity-85 transition duration-500 hover:scale-105 hover:opacity-100"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-sm font-black text-white">{member.name}</p>
+                  <p className="text-sm font-black text-white">
+                    Drums2Streets live
+                  </p>
                 </div>
               </div>
             ))}
