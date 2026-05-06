@@ -23,7 +23,8 @@ type Benefit = {
 
 type Member = {
   name: string
-  image: string
+  image?: string
+  role?: string
 }
 
 type FieldProps = {
@@ -79,6 +80,8 @@ const benefits: Benefit[] = [
 ]
 
 const members: Member[] = [
+  { name: 'Marc Hobi', role: 'Bandleader' },
+  { name: 'Fabian Diehm' },
   { name: 'Andrin Baer', image: andrinImage },
   { name: 'Angelo Razzino', image: angeloImage },
   { name: 'Daniel Rothammer', image: danielImage },
@@ -86,7 +89,9 @@ const members: Member[] = [
   { name: 'Timon Willi', image: timonImage },
 ]
 
-const galleryImages = [heroImage, saloonImage, shovelImage, ...members.map((member) => member.image)]
+const portraitMembers = members.filter(
+  (member): member is Member & { image: string } => Boolean(member.image),
+)
 
 const mandatoryFields = [
   'First Name',
@@ -281,9 +286,7 @@ function ZohoBookingForm() {
 
         <div className="rounded-lg border border-white/10 bg-stone-950 p-5 text-left shadow-2xl shadow-black/30 sm:p-7 md:p-8">
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase text-[#2f7dca]">
-              CRM Booking-Anfrage
-            </p>
+            <p className="text-xs font-bold uppercase text-[#2f7dca]">Kontakt</p>
             <h3 className="mt-2 text-2xl font-black text-white">
               Booking-Anfrage Drums2Streets
             </h3>
@@ -508,19 +511,22 @@ function App() {
           <SectionHeader
             eyebrow="Galerie"
             title="Live-Momente, Bühnenenergie und Gesichter der Show."
-            text="Ein erster Einblick in die Bildwelt von Drums2Streets. Weitere Auftrittsbilder und Video-Stills können später ergänzt werden."
+            text="Die Galerie zeigt die Gesichter hinter der Performance. Weitere Portraits können ergänzt werden, sobald die Bilder vorliegen."
           />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {galleryImages.map((image, index) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {portraitMembers.map((member) => (
               <div
-                className="aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-stone-900"
-                key={image}
+                className="relative aspect-[3/4] overflow-hidden rounded-lg border border-white/10 bg-stone-900"
+                key={member.name}
               >
                 <img
-                  src={image}
-                  alt={`Drums2Streets Galerie ${index + 1}`}
+                  src={member.image}
+                  alt={member.name}
                   className="h-full w-full object-cover opacity-85 transition duration-500 hover:scale-105 hover:opacity-100"
                 />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                  <p className="text-sm font-black text-white">{member.name}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -541,13 +547,31 @@ function App() {
                 key={member.name}
               >
                 <div className="aspect-[3/4] overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="h-full w-full object-cover opacity-90"
-                  />
+                  {member.image ? (
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="h-full w-full object-cover opacity-90"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#155a9f]/35 via-stone-900 to-black px-5 text-center">
+                      <span className="text-4xl font-black uppercase text-white">
+                        {member.name
+                          .split(' ')
+                          .map((part) => part[0])
+                          .join('')}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <h3 className="p-4 text-sm font-black text-white">{member.name}</h3>
+                <div className="p-4">
+                  <h3 className="text-sm font-black text-white">{member.name}</h3>
+                  {member.role ? (
+                    <p className="mt-1 text-xs font-bold uppercase text-[#7db7ee]">
+                      {member.role}
+                    </p>
+                  ) : null}
+                </div>
               </article>
             ))}
           </div>
@@ -566,8 +590,8 @@ function App() {
             Bereit für einen Auftritt, der bleibt?
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-stone-300 md:text-lg">
-            Füllen Sie die Anfrage aus. Die Daten gehen direkt an unser CRM für
-            eine saubere Booking-Bearbeitung.
+            Füllen Sie die Anfrage aus. Wir melden uns mit einer passenden
+            Empfehlung für Event, Bühne und Ablauf.
           </p>
         </div>
         <ZohoBookingForm />
