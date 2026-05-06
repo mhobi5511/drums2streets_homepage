@@ -401,9 +401,6 @@ function App() {
 
           <div className="flex flex-1 items-end pb-12 pt-28 md:pb-16">
             <div className="max-w-4xl">
-              <p className="mb-5 inline-flex border border-[#2f7dca]/35 bg-[#155a9f]/15 px-4 py-2 text-xs font-bold uppercase text-[#b9dcff]">
-                Schweizer Drum Show Gruppe
-              </p>
               <h1 className="text-5xl font-black leading-[0.98] text-white sm:text-6xl md:text-7xl lg:text-8xl">
                 Rhythmus, der Events in Bewegung bringt.
               </h1>
