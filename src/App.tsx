@@ -359,9 +359,11 @@ function App() {
           alt=""
           className="absolute inset-0 h-full w-full object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/55 to-[#070707]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#070707]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_72%,rgba(47,125,202,0.36),transparent_34%),radial-gradient(circle_at_78%_22%,rgba(21,90,159,0.32),transparent_30%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#070707] to-transparent" />
         <div className="relative mx-auto flex min-h-[92svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
-          <header className="rounded-lg border border-white/10 bg-black/55 px-4 py-3 shadow-2xl shadow-black/30 backdrop-blur-md sm:px-5">
+          <header className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5">
             <div className="flex items-center justify-between gap-4">
               <a
                 href="#"
@@ -376,23 +378,23 @@ function App() {
                   />
                 </span>
             </a>
-              <nav className="hidden items-center gap-6 text-sm font-semibold text-stone-300 md:flex">
-                <a className="hover:text-white" href="#shows">
+              <nav className="hidden items-center gap-2 text-sm font-black uppercase text-white md:flex">
+                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#shows">
                   Shows
                 </a>
-                <a className="hover:text-white" href="#buchen">
+                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#buchen">
                   Buchen
                 </a>
-                <a className="hover:text-white" href="#galerie">
+                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#galerie">
                   Galerie
                 </a>
-                <a className="hover:text-white" href="#kontakt">
+                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#kontakt">
                   Kontakt
                 </a>
               </nav>
               <a
                 href="#kontakt"
-                className="hidden rounded-md bg-[#155a9f] px-4 py-3 text-xs font-black text-white transition hover:bg-[#2f7dca] sm:inline-flex"
+                className="hidden rounded-md bg-[#155a9f] px-5 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#155a9f]/30 transition hover:bg-[#2f7dca] sm:inline-flex"
               >
                 Anfrage
               </a>
@@ -400,28 +402,41 @@ function App() {
           </header>
 
           <div className="flex flex-1 items-end pb-12 pt-28 md:pb-16">
-            <div className="max-w-4xl">
-              <h1 className="text-5xl font-black leading-[0.98] text-white sm:text-6xl md:text-7xl lg:text-8xl">
+            <div className="max-w-5xl">
+              <p className="mb-5 text-sm font-black uppercase text-[#b9dcff]">
+                Live. Laut. Präzise.
+              </p>
+              <h1 className="max-w-5xl text-6xl font-black uppercase leading-[0.88] text-white drop-shadow-2xl sm:text-7xl md:text-8xl lg:text-9xl">
                 Rhythmus, der Events in Bewegung bringt.
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-200 md:text-xl">
+              <p className="mt-8 max-w-2xl border-l-4 border-[#2f7dca] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
                 Drums2Streets liefert explosive Live-Performance für Festivals,
                 Firmenanlässe, Privatfeiern und Bühnen, die mehr als Musik
                 brauchen.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#kontakt"
-                  className="inline-flex justify-center rounded-md bg-[#155a9f] px-6 py-4 text-sm font-black text-white transition hover:bg-[#2f7dca]"
+                  className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/35 transition hover:bg-[#2f7dca]"
                 >
                   Anfrage starten
                 </a>
                 <a
                   href="#shows"
-                  className="inline-flex justify-center rounded-md border border-white/20 px-6 py-4 text-sm font-black text-white transition hover:border-white/45"
+                  className="inline-flex justify-center rounded-md border border-white/35 bg-black/35 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
                 >
                   Showformate ansehen
                 </a>
+              </div>
+              <div className="mt-10 grid max-w-2xl grid-cols-3 gap-3 text-center sm:text-left">
+                {['Festival', 'Corporate', 'Privat'].map((item) => (
+                  <div
+                    className="border-t border-white/20 pt-3 text-xs font-black uppercase text-stone-200"
+                    key={item}
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
