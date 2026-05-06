@@ -552,7 +552,6 @@ function App() {
           <SectionHeader
             eyebrow="Crew"
             title="Menschen hinter dem Sound."
-            text="Die Sepia-Portraits sind als ruhiger Kontrast zur lauten Show inszeniert und geben der Seite mehr Persönlichkeit."
           />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {members.map((member) => (
