@@ -368,7 +368,7 @@ function App() {
                 className="inline-flex items-center gap-3"
                 aria-label="Drums2Streets"
               >
-                <span className="flex h-14 w-36 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white px-3 shadow-lg shadow-black/30 sm:w-44">
+                <span className="flex h-16 w-44 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white px-1.5 py-1 shadow-lg shadow-black/30 sm:h-20 sm:w-56">
                   <img
                     src={logoImage}
                     alt="Drums2Streets"
@@ -563,7 +563,7 @@ function App() {
           <img
             src={logoImage}
             alt="Drums2Streets"
-            className="h-10 w-fit rounded-sm bg-white object-contain px-2 py-1"
+            className="h-12 w-fit rounded-sm bg-white object-contain px-1 py-0.5"
           />
           <p>Premium Drum Shows aus der Schweiz</p>
         </div>
