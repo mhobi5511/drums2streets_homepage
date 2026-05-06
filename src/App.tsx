@@ -140,7 +140,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
-      <p className="mb-3 text-xs font-bold uppercase text-red-400">{eyebrow}</p>
+      <p className="mb-3 text-xs font-bold uppercase text-[#2f7dca]">{eyebrow}</p>
       <h2 className="text-3xl font-black leading-tight text-stone-50 sm:text-4xl md:text-5xl">
         {title}
       </h2>
@@ -167,7 +167,7 @@ function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
           0{index + 1}
         </div>
         <div className="absolute inset-x-5 bottom-5">
-          <p className="mb-2 text-xs font-bold uppercase text-amber-300">
+          <p className="mb-2 text-xs font-bold uppercase text-[#7db7ee]">
             {show.label}
           </p>
           <h3 className="text-3xl font-black text-white">{show.name}</h3>
@@ -201,10 +201,10 @@ function FormField({
     <label className="block">
       <span className="mb-2 block text-sm font-bold text-stone-200">
         {label}
-        {required ? <span className="text-red-400"> *</span> : null}
+        {required ? <span className="text-[#2f7dca]"> *</span> : null}
       </span>
       <input
-        className="w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-red-400"
+        className="w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-[#2f7dca]"
         maxLength={maxLength}
         name={name}
         placeholder={placeholder}
@@ -227,10 +227,10 @@ function TextAreaField({
     <label className="block md:col-span-2">
       <span className="mb-2 block text-sm font-bold text-stone-200">
         {label}
-        {required ? <span className="text-red-400"> *</span> : null}
+        {required ? <span className="text-[#2f7dca]"> *</span> : null}
       </span>
       <textarea
-        className="min-h-28 w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-red-400"
+        className="min-h-28 w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-[#2f7dca]"
         maxLength={2000}
         name={name}
       />
@@ -281,7 +281,7 @@ function ZohoBookingForm() {
 
         <div className="rounded-lg border border-white/10 bg-stone-950 p-5 text-left shadow-2xl shadow-black/30 sm:p-7 md:p-8">
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase text-red-400">
+            <p className="text-xs font-bold uppercase text-[#2f7dca]">
               CRM Booking-Anfrage
             </p>
             <h3 className="mt-2 text-2xl font-black text-white">
@@ -332,7 +332,7 @@ function ZohoBookingForm() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
-              className="rounded-md bg-red-500 px-7 py-4 text-sm font-black text-white transition hover:bg-red-400"
+              className="rounded-md bg-[#155a9f] px-7 py-4 text-sm font-black text-white transition hover:bg-[#2f7dca]"
               type="submit"
             >
               Senden
@@ -361,33 +361,47 @@ function App() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/55 to-[#070707]" />
         <div className="relative mx-auto flex min-h-[92svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
-          <header className="flex items-center justify-between gap-4">
-            <a href="#" className="inline-flex items-center">
-              <img
-                src={logoImage}
-                alt="Drums2Streets"
-                className="h-12 w-auto rounded-sm bg-white object-contain px-2 py-1"
-              />
+          <header className="rounded-lg border border-white/10 bg-black/55 px-4 py-3 shadow-2xl shadow-black/30 backdrop-blur-md sm:px-5">
+            <div className="flex items-center justify-between gap-4">
+              <a
+                href="#"
+                className="inline-flex items-center gap-3"
+                aria-label="Drums2Streets"
+              >
+                <span className="flex h-14 w-36 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white px-3 shadow-lg shadow-black/30 sm:w-44">
+                  <img
+                    src={logoImage}
+                    alt="Drums2Streets"
+                    className="h-full w-full object-contain"
+                  />
+                </span>
             </a>
-            <nav className="hidden items-center gap-6 text-sm font-semibold text-stone-300 md:flex">
-              <a className="hover:text-white" href="#shows">
-                Shows
+              <nav className="hidden items-center gap-6 text-sm font-semibold text-stone-300 md:flex">
+                <a className="hover:text-white" href="#shows">
+                  Shows
+                </a>
+                <a className="hover:text-white" href="#buchen">
+                  Buchen
+                </a>
+                <a className="hover:text-white" href="#galerie">
+                  Galerie
+                </a>
+                <a className="hover:text-white" href="#kontakt">
+                  Kontakt
+                </a>
+              </nav>
+              <a
+                href="#kontakt"
+                className="hidden rounded-md bg-[#155a9f] px-4 py-3 text-xs font-black text-white transition hover:bg-[#2f7dca] sm:inline-flex"
+              >
+                Anfrage
               </a>
-              <a className="hover:text-white" href="#buchen">
-                Buchen
-              </a>
-              <a className="hover:text-white" href="#galerie">
-                Galerie
-              </a>
-              <a className="hover:text-white" href="#kontakt">
-                Kontakt
-              </a>
-            </nav>
+            </div>
           </header>
 
           <div className="flex flex-1 items-end pb-12 pt-28 md:pb-16">
             <div className="max-w-4xl">
-              <p className="mb-5 inline-flex border border-red-400/35 bg-red-500/10 px-4 py-2 text-xs font-bold uppercase text-red-200">
+              <p className="mb-5 inline-flex border border-[#2f7dca]/35 bg-[#155a9f]/15 px-4 py-2 text-xs font-bold uppercase text-[#b9dcff]">
                 Schweizer Drum Show Gruppe
               </p>
               <h1 className="text-5xl font-black leading-[0.98] text-white sm:text-6xl md:text-7xl lg:text-8xl">
@@ -401,7 +415,7 @@ function App() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#kontakt"
-                  className="inline-flex justify-center rounded-md bg-red-500 px-6 py-4 text-sm font-black text-white transition hover:bg-red-400"
+                  className="inline-flex justify-center rounded-md bg-[#155a9f] px-6 py-4 text-sm font-black text-white transition hover:bg-[#2f7dca]"
                 >
                   Anfrage starten
                 </a>
@@ -420,7 +434,7 @@ function App() {
       <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
           <div>
-            <p className="mb-4 text-xs font-bold uppercase text-red-400">
+            <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
               Kurzprofil
             </p>
             <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
@@ -459,7 +473,7 @@ function App() {
       >
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="mb-4 text-xs font-bold uppercase text-red-400">
+            <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
               Warum buchen
             </p>
             <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
@@ -533,7 +547,7 @@ function App() {
         className="border-t border-white/10 px-5 py-16 sm:px-8 md:py-24 lg:px-10"
       >
         <div className="mx-auto mb-10 max-w-5xl text-center">
-          <p className="mb-4 text-xs font-bold uppercase text-red-400">
+          <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
             Kontakt
           </p>
           <h2 className="text-4xl font-black leading-tight text-white sm:text-5xl md:text-6xl">
