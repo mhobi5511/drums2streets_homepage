@@ -309,7 +309,7 @@ function Header() {
           </Link>
       </div>
 
-      <div className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5 lg:flex lg:flex-1 lg:items-center lg:justify-between">
+      <div className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5 lg:mt-4 lg:flex lg:min-h-[70px] lg:flex-1 lg:items-center lg:justify-between">
         <nav className="grid grid-cols-2 gap-2 text-center font-black uppercase text-white sm:grid-cols-4 lg:flex lg:items-center">
           <Link className={navLinkClass} href="/ueber-uns">
             Über uns
