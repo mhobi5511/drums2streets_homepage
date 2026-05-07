@@ -1,11 +1,13 @@
 import type { FormEvent, MouseEvent, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
-import logoImage from './assets/D2S_Logo-01.jpg'
+import logoImage from './assets/D2S_Logo_braun-1.png'
 import heroImage from './assets/D2S Wild West.jpg'
 import saloonImage from './assets/D2S Saloon.jpg'
 import shovelImage from './assets/D2S Wild West Shovel.jpg'
 import banjoVolcanoImage from './assets/Drums2streets_Banjo Volcano.jpg'
 import supertalentImage from './assets/Supertalent D2S Abschlag.jpg'
+import lasVegasImage from './assets/D2S Las Vegas.jpg'
+import lasVegasBassImage from './assets/D2S E-Bass Las Vegas.jpg'
 import heroVideo from './assets/D2Shomepage.mp4'
 import andrinImage from './assets/Andrin Baer sepia.jpg'
 import angeloImage from './assets/Angelo Razzino sepia.jpg'
@@ -81,7 +83,7 @@ const showFormats: ShowFormat[] = [
       'Eine visuelle Showwelt mit Licht, Rhythmus, Melodien und überraschenden Instrumenten aus der Schattenseite der Stadt.',
     intro:
       'Las Vegas steht für eine glitzernde Metropole in der Wüste von Nevada.',
-    image: supertalentImage,
+    image: lasVegasImage,
     content: [
       'Las Vegas steht für eine glitzernde Metropole in der Wüste von Nevada.',
       'Doch wo sich hell erleuchtete Strassen präsentieren und prunkvolle Casinos in den Himmel wachsen, gibt es auch dunkle Hinterhöfe und vollgestellte Gassen. In diese geheimnisvolle Schattenwelt entführt Drums2Streets mit der Show Las Vegas.',
@@ -137,6 +139,8 @@ const members: Member[] = [
 const groupGalleryImages = [
   supertalentImage,
   banjoVolcanoImage,
+  lasVegasImage,
+  lasVegasBassImage,
   heroImage,
   saloonImage,
   shovelImage,
@@ -268,7 +272,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
-      <p className="mb-3 text-xs font-bold uppercase text-[#2f7dca]">{eyebrow}</p>
+      <p className="mb-3 text-xs font-bold uppercase text-[#b99b5d]">{eyebrow}</p>
       <h2 className="text-3xl font-black leading-tight text-stone-50 sm:text-4xl md:text-5xl">
         {title}
       </h2>
@@ -283,24 +287,24 @@ function SectionHeader({
 
 function Header() {
   const navLinkClass =
-    'rounded-md px-3 py-3 text-xs transition hover:bg-white/10 hover:text-[#b9dcff] lg:px-4'
+    'rounded-md px-3 py-3 text-xs transition hover:bg-white/10 hover:text-[#ead8a8] lg:px-4'
 
   return (
     <header className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
-            <span className="flex h-16 w-44 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white shadow-lg shadow-black/30 sm:h-20 sm:w-56">
+            <span className="flex h-16 w-44 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-black shadow-lg shadow-black/30 sm:h-20 sm:w-56">
               <img
                 src={logoImage}
                 alt="Drums2Streets"
-                className="h-full w-full scale-[1.42] object-contain"
+                className="h-full w-full scale-110 object-contain"
               />
             </span>
           </Link>
           <Link
             href="/#kontakt"
-            className="rounded-md bg-[#155a9f] px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#155a9f]/30 transition hover:bg-[#2f7dca] sm:hidden"
+            className="rounded-md bg-[#8f6b32] px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#8f6b32]/30 transition hover:bg-[#b99b5d] sm:hidden"
           >
             Anfrage
           </Link>
@@ -325,7 +329,7 @@ function Header() {
 
         <Link
           href="/#kontakt"
-          className="hidden rounded-md bg-[#155a9f] px-5 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#155a9f]/30 transition hover:bg-[#2f7dca] lg:inline-flex"
+          className="hidden rounded-md bg-[#8f6b32] px-5 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#8f6b32]/30 transition hover:bg-[#b99b5d] lg:inline-flex"
         >
           Anfrage
         </Link>
@@ -391,13 +395,13 @@ function PageHero({
         <Header />
         <div className="flex flex-1 items-end pb-12 pt-24">
           <div className="max-w-4xl">
-            <p className="mb-5 text-sm font-black uppercase text-[#b9dcff]">
+            <p className="mb-5 text-sm font-black uppercase text-[#ead8a8]">
               {eyebrow}
             </p>
             <h1 className="text-5xl font-black uppercase leading-[0.9] text-white drop-shadow-2xl sm:text-7xl md:text-8xl">
               {title}
             </h1>
-            <p className="mt-8 max-w-2xl border-l-4 border-[#2f7dca] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
+            <p className="mt-8 max-w-2xl border-l-4 border-[#b99b5d] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
               {intro}
             </p>
           </div>
@@ -411,7 +415,7 @@ function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
   return (
     <Link
       href={show.path}
-      className="group block overflow-hidden rounded-lg border border-white/10 bg-stone-950 transition hover:-translate-y-1 hover:border-[#2f7dca]/60"
+      className="group block overflow-hidden rounded-lg border border-white/10 bg-stone-950 transition hover:-translate-y-1 hover:border-[#b99b5d]/60"
     >
       <article>
         <div className="relative aspect-[4/5] overflow-hidden">
@@ -425,7 +429,7 @@ function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
             0{index + 1}
           </div>
           <div className="absolute inset-x-5 bottom-5">
-            <p className="mb-2 text-xs font-bold uppercase text-[#7db7ee]">
+            <p className="mb-2 text-xs font-bold uppercase text-[#d8c28a]">
               {show.label}
             </p>
             <h3 className="text-3xl font-black text-white">{show.name}</h3>
@@ -433,7 +437,7 @@ function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
         </div>
         <div className="p-5">
           <p className="text-sm leading-6 text-stone-300">{show.description}</p>
-          <p className="mt-5 text-xs font-black uppercase text-[#b9dcff]">
+          <p className="mt-5 text-xs font-black uppercase text-[#ead8a8]">
             Show entdecken
           </p>
         </div>
@@ -465,10 +469,10 @@ function FormField({
     <label className="block">
       <span className="mb-2 block text-sm font-bold text-stone-200">
         {label}
-        {required ? <span className="text-[#2f7dca]"> *</span> : null}
+        {required ? <span className="text-[#b99b5d]"> *</span> : null}
       </span>
       <input
-        className="w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-[#2f7dca]"
+        className="w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-[#b99b5d]"
         maxLength={maxLength}
         name={name}
         placeholder={placeholder}
@@ -491,10 +495,10 @@ function TextAreaField({
     <label className="block md:col-span-2">
       <span className="mb-2 block text-sm font-bold text-stone-200">
         {label}
-        {required ? <span className="text-[#2f7dca]"> *</span> : null}
+        {required ? <span className="text-[#b99b5d]"> *</span> : null}
       </span>
       <textarea
-        className="min-h-28 w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-[#2f7dca]"
+        className="min-h-28 w-full rounded-md border border-white/10 bg-black/45 px-4 py-3 text-base text-white outline-none transition placeholder:text-stone-600 focus:border-[#b99b5d]"
         maxLength={2000}
         name={name}
       />
@@ -545,7 +549,7 @@ function ZohoBookingForm() {
 
         <div className="rounded-lg border border-white/10 bg-stone-950 p-5 text-left shadow-2xl shadow-black/30 sm:p-7 md:p-8">
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase text-[#2f7dca]">Kontakt</p>
+            <p className="text-xs font-bold uppercase text-[#b99b5d]">Kontakt</p>
             <h3 className="mt-2 text-2xl font-black text-white">
               Booking-Anfrage Drums2Streets
             </h3>
@@ -594,7 +598,7 @@ function ZohoBookingForm() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
-              className="rounded-md bg-[#155a9f] px-7 py-4 text-sm font-black text-white transition hover:bg-[#2f7dca]"
+              className="rounded-md bg-[#8f6b32] px-7 py-4 text-sm font-black text-white transition hover:bg-[#b99b5d]"
               type="submit"
             >
               Senden
@@ -618,13 +622,13 @@ function HomePage() {
       <Hero>
         <div className="flex flex-1 items-end pb-12 pt-28 md:pb-16">
           <div className="max-w-5xl">
-            <p className="mb-5 text-sm font-black uppercase text-[#b9dcff]">
+            <p className="mb-5 text-sm font-black uppercase text-[#ead8a8]">
               Live. Laut. Präzise.
             </p>
             <h1 className="max-w-5xl text-6xl font-black uppercase leading-[0.88] text-white drop-shadow-2xl sm:text-7xl md:text-8xl lg:text-9xl">
               Rhythmus, der Events in Bewegung bringt.
             </h1>
-            <p className="mt-8 max-w-2xl border-l-4 border-[#2f7dca] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
+            <p className="mt-8 max-w-2xl border-l-4 border-[#b99b5d] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
               Drums2Streets liefert explosive Live-Performance für Festivals,
               Firmenanlässe, Privatfeiern und Bühnen, die mehr als Musik
               brauchen.
@@ -632,13 +636,13 @@ function HomePage() {
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/#kontakt"
-                className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/35 transition hover:bg-[#2f7dca]"
+                className="inline-flex justify-center rounded-md bg-[#8f6b32] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#8f6b32]/35 transition hover:bg-[#b99b5d]"
               >
                 Anfrage starten
               </Link>
               <Link
                 href="/shows/wild-west"
-                className="inline-flex justify-center rounded-md border border-white/35 bg-black/35 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
+                className="inline-flex justify-center rounded-md border border-white/35 bg-black/35 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#d8c28a] hover:text-[#ead8a8]"
               >
                 Shows ansehen
               </Link>
@@ -674,7 +678,7 @@ function IntroSection() {
     <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
         <div>
-          <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+          <p className="mb-4 text-xs font-bold uppercase text-[#b99b5d]">
             Kurzprofil
           </p>
           <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
@@ -696,7 +700,7 @@ function AboutTeaser() {
     <section className="border-y border-white/10 bg-black px-5 py-16 sm:px-8 md:py-24 lg:px-10">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
         <div>
-          <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+          <p className="mb-4 text-xs font-bold uppercase text-[#b99b5d]">
             Über uns
           </p>
           <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
@@ -708,7 +712,7 @@ function AboutTeaser() {
           </p>
           <Link
             href="/ueber-uns"
-            className="mt-8 inline-flex rounded-md border border-white/20 px-6 py-4 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
+            className="mt-8 inline-flex rounded-md border border-white/20 px-6 py-4 text-sm font-black uppercase text-white transition hover:border-[#d8c28a] hover:text-[#ead8a8]"
           >
             Mehr erfahren
           </Link>
@@ -755,7 +759,7 @@ function WhyBookSection() {
     >
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+          <p className="mb-4 text-xs font-bold uppercase text-[#b99b5d]">
             Warum buchen
           </p>
           <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
@@ -825,7 +829,7 @@ function CrewSection() {
                     className="h-full w-full object-cover opacity-90"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#155a9f]/35 via-stone-900 to-black px-5 text-center">
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#8f6b32]/35 via-stone-900 to-black px-5 text-center">
                     <span className="text-4xl font-black uppercase text-white">
                       {member.name
                         .split(' ')
@@ -838,7 +842,7 @@ function CrewSection() {
               <div className="p-4">
                 <h3 className="text-sm font-black text-white">{member.name}</h3>
                 {member.role ? (
-                  <p className="mt-1 text-xs font-bold uppercase text-[#7db7ee]">
+                  <p className="mt-1 text-xs font-bold uppercase text-[#d8c28a]">
                     {member.role}
                   </p>
                 ) : null}
@@ -869,13 +873,13 @@ function BecomeADrummerSection({ expanded }: { expanded: boolean }) {
         <div className="grid gap-5 md:grid-cols-3">
           {drummerLinks.map((link) => (
             <a
-              className="group rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-1 hover:border-[#2f7dca]/60"
+              className="group rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-1 hover:border-[#b99b5d]/60"
               href={link.url}
               key={link.title}
               rel="noreferrer"
               target="_blank"
             >
-              <p className="mb-4 text-xs font-bold uppercase text-[#7db7ee]">
+              <p className="mb-4 text-xs font-bold uppercase text-[#d8c28a]">
                 Externer Link
               </p>
               <h3 className="text-xl font-black leading-tight text-white">
@@ -884,7 +888,7 @@ function BecomeADrummerSection({ expanded }: { expanded: boolean }) {
               <p className="mt-4 text-sm leading-6 text-stone-300">
                 {link.description}
               </p>
-              <p className="mt-6 text-xs font-black uppercase text-[#b9dcff]">
+              <p className="mt-6 text-xs font-black uppercase text-[#ead8a8]">
                 Website öffnen
               </p>
             </a>
@@ -900,7 +904,7 @@ function ContactCta() {
     <section className="border-t border-white/10 bg-black px-5 py-16 sm:px-8 md:py-20 lg:px-10">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 rounded-lg border border-white/10 bg-stone-950 p-6 md:flex-row md:items-center md:justify-between md:p-8">
         <div>
-          <p className="mb-3 text-xs font-bold uppercase text-[#2f7dca]">
+          <p className="mb-3 text-xs font-bold uppercase text-[#b99b5d]">
             Booking
           </p>
           <h2 className="text-3xl font-black text-white">
@@ -909,7 +913,7 @@ function ContactCta() {
         </div>
         <Link
           href="/#kontakt"
-          className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/25 transition hover:bg-[#2f7dca]"
+          className="inline-flex justify-center rounded-md bg-[#8f6b32] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#8f6b32]/25 transition hover:bg-[#b99b5d]"
         >
           Anfrage starten
         </Link>
@@ -925,7 +929,7 @@ function ContactSection() {
       className="border-t border-white/10 px-5 py-16 sm:px-8 md:py-24 lg:px-10"
     >
       <div className="mx-auto mb-10 max-w-5xl text-center">
-        <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+        <p className="mb-4 text-xs font-bold uppercase text-[#b99b5d]">
           Kontakt
         </p>
         <h2 className="text-4xl font-black leading-tight text-white sm:text-5xl md:text-6xl">
@@ -1014,13 +1018,13 @@ function ShowPage({ show }: { show: ShowFormat }) {
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/#kontakt"
-            className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/25 transition hover:bg-[#2f7dca]"
+            className="inline-flex justify-center rounded-md bg-[#8f6b32] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#8f6b32]/25 transition hover:bg-[#b99b5d]"
           >
             Show anfragen
           </Link>
           <Link
             href="/#shows"
-            className="inline-flex justify-center rounded-md border border-white/20 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
+            className="inline-flex justify-center rounded-md border border-white/20 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#d8c28a] hover:text-[#ead8a8]"
           >
             Zurück zu den Shows
           </Link>
@@ -1076,7 +1080,7 @@ function Footer() {
           <img
             src={logoImage}
             alt="Drums2Streets"
-            className="h-12 w-fit scale-110 rounded-sm bg-white object-contain"
+            className="h-12 w-fit scale-110 rounded-sm bg-black object-contain"
           />
         </Link>
         <p>Premium Drum Shows aus der Schweiz</p>
