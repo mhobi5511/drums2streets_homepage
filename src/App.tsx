@@ -1,4 +1,5 @@
-import type { FormEvent } from 'react'
+import type { FormEvent, MouseEvent, ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import logoImage from './assets/D2S_Logo-01.jpg'
 import heroImage from './assets/D2S Wild West.jpg'
 import saloonImage from './assets/D2S Saloon.jpg'
@@ -12,11 +13,22 @@ import danielImage from './assets/Daniel Rothammer sepia.jpg'
 import nicoImage from './assets/Nico Ernst sepia.jpg'
 import timonImage from './assets/Timon Willi sepia.jpg'
 
+type RoutePath =
+  | '/'
+  | '/ueber-uns'
+  | '/shows/wild-west'
+  | '/shows/las-vegas'
+  | '/shows/new-york'
+  | '/become-a-drummer'
+
 type ShowFormat = {
   name: string
+  path: RoutePath
   label: string
   description: string
+  intro: string
   image: string
+  content: string[]
 }
 
 type Benefit = {
@@ -39,27 +51,57 @@ type FieldProps = {
   type?: 'text' | 'email' | 'tel' | 'url'
 }
 
+type DrummerLink = {
+  title: string
+  url: string
+  description: string
+}
+
 const showFormats: ShowFormat[] = [
   {
-    name: 'Swiss Made',
-    label: 'Präzision und Heimat',
-    description:
-      'Ein kraftvolles Format mit Schweizer Charakter, klaren Rhythmen und hochwertiger Bühnenwirkung.',
-    image: shovelImage,
-  },
-  {
     name: 'Wild West',
+    path: '/shows/wild-west',
     label: 'Staub, Tempo, Show',
     description:
       'Cinematic Drumming mit rauer Energie, starken Bildern und einem Auftritt, der sofort Atmosphäre schafft.',
+    intro:
+      'Das Amerika des 19. Jahrhunderts war geprägt von Pioniergeist und der Besiedelung des Wilden Westens.',
     image: saloonImage,
+    content: [
+      'Das Amerika des 19. Jahrhunderts war geprägt von Pioniergeist und der Besiedelung des Wilden Westens.',
+      'In der gleichen Zeit erreichte auch der Goldrausch seinen Höhepunkt. Aus den dunklen und stickigen Minen kommend, erwachen die Lebensgeister und steigern sich zu einer faszinierenden Trommelshow, welche in einem fulminanten Finale endet.',
+      'Musiziert wird mit rustikalen Instrumenten wie alten Spitzhacken, Tonnen und Schaufeln, umrandet von explosiven Effekten. Doch nur zu trommeln wäre den jungen Künstlern zu einfach: Mitreissende Klänge, unterstützt durch schwindelerregende Schläger-Akrobatik und eine gekonnte Choreographie garantieren, dass kein Fuss ruhig und keine Hand ungeklatscht bleibt.',
+    ],
+  },
+  {
+    name: 'Las Vegas',
+    path: '/shows/las-vegas',
+    label: 'Licht, Schatten, Spektakel',
+    description:
+      'Eine visuelle Showwelt mit Licht, Rhythmus, Melodien und überraschenden Instrumenten aus der Schattenseite der Stadt.',
+    intro:
+      'Las Vegas steht für eine glitzernde Metropole in der Wüste von Nevada.',
+    image: supertalentImage,
+    content: [
+      'Las Vegas steht für eine glitzernde Metropole in der Wüste von Nevada.',
+      'Doch wo sich hell erleuchtete Strassen präsentieren und prunkvolle Casinos in den Himmel wachsen, gibt es auch dunkle Hinterhöfe und vollgestellte Gassen. In diese geheimnisvolle Schattenwelt entführt Drums2Streets mit der Show Las Vegas.',
+      'Ausrangierte Spielautomaten, raffiniert in klingende Instrumente umgewandelt, Abwasserrohre, die nicht nur ungeahnte Töne und Melodien von sich geben, sondern auch noch in den wildesten Farben leuchten, sowie eine beeindruckende Kombination von Lasern, Licht, Melodien und vielen visuellen Effekten schaffen ein unvergessliches Erlebnis.',
+    ],
   },
   {
     name: 'New York',
+    path: '/shows/new-york',
     label: 'Urban und direkt',
     description:
       'Street-Performance, Groove und Grossstadtpuls für Events, die modern, schnell und präsent wirken sollen.',
+    intro:
+      'The Melting Pot, die Stadt, die niemals schläft, Big Apple, Gotham City: New York City.',
     image: heroImage,
+    content: [
+      'The Melting Pot, die Stadt, die niemals schläft, Big Apple, Gotham City: Es gibt unzählige Namen für diese Weltmetropole: New York City.',
+      'Drums2Streets entführt mit dieser Show in die zwielichtigen Gassen New Yorks der 30er Jahre und überrascht mit aussergewöhnlichen Choreographien. Schattendrummer sorgen für grosse Augen, kurios wirkende Instrumente wie zum Beispiel die “Rainingpipes”, zusammengebaut aus Strassenmüll und Schrott, entfalten ungeahnte Klänge.',
+      'Hits aus den aktuellen Charts, ausschliesslich durch diese raffinierten Schrotthaufen dargeboten, lassen die Zuhörer über die Vielfältigkeit von Recycling staunen.',
+    ],
   },
 ]
 
@@ -100,6 +142,26 @@ const groupGalleryImages = [
   shovelImage,
 ]
 
+const drummerLinks: DrummerLink[] = [
+  {
+    title: 'Tambourenverein der Stadt Kreuzlingen',
+    url: 'https://www.tbvsk.ch',
+    description: 'Wo Kinder zu Drummern werden.',
+  },
+  {
+    title: 'Ostschweizer Tambourenverband',
+    url: 'https://www.otv.ch',
+    description:
+      'Finde den ostschweizer Tambourenverein in deiner Nähe und starte deine Ausbildung zum Tambour.',
+  },
+  {
+    title: 'Schweizerischer Tambouren- und Pfeiferverband',
+    url: 'https://www.stpv.ch',
+    description:
+      'Offizielle Website des schweizerischen Tambouren- und Pfeiferverbandes.',
+  },
+]
+
 const mandatoryFields = [
   'First Name',
   'Last Name',
@@ -116,13 +178,42 @@ const fieldLabels = [
   'Vorname',
   'Nachname',
   'E-Mail',
-  'Straße',
+  'Strasse',
   'Stadt',
   'Postleitzahl',
   'Wo haben Sie Drums2Streets entdeckt?',
   'Datum des Events',
   'Eventbezeichnung',
 ]
+
+function getPath(): RoutePath {
+  const path = window.location.pathname
+  const knownRoutes: RoutePath[] = [
+    '/',
+    '/ueber-uns',
+    '/shows/wild-west',
+    '/shows/las-vegas',
+    '/shows/new-york',
+    '/become-a-drummer',
+  ]
+
+  return knownRoutes.includes(path as RoutePath) ? (path as RoutePath) : '/'
+}
+
+function navigateTo(path: string) {
+  const url = new URL(path, window.location.origin)
+  window.history.pushState({}, '', `${url.pathname}${url.hash}`)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+
+  if (url.hash) {
+    requestAnimationFrame(() => {
+      document.querySelector(url.hash)?.scrollIntoView({ behavior: 'smooth' })
+    })
+    return
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 function checkMandatory(event: FormEvent<HTMLFormElement>) {
   for (let i = 0; i < mandatoryFields.length; i += 1) {
@@ -139,6 +230,31 @@ function checkMandatory(event: FormEvent<HTMLFormElement>) {
       return
     }
   }
+}
+
+function Link({
+  href,
+  className,
+  children,
+  ariaLabel,
+}: {
+  href: string
+  className?: string
+  children: ReactNode
+  ariaLabel?: string
+}) {
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (href.startsWith('/')) {
+      event.preventDefault()
+      navigateTo(href)
+    }
+  }
+
+  return (
+    <a aria-label={ariaLabel} className={className} href={href} onClick={handleClick}>
+      {children}
+    </a>
+  )
 }
 
 function SectionHeader({
@@ -165,28 +281,164 @@ function SectionHeader({
   )
 }
 
-function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
+function Header() {
+  const navLinkClass =
+    'rounded-md px-3 py-3 text-xs transition hover:bg-white/10 hover:text-[#b9dcff] lg:px-4'
+
   return (
-    <article className="group overflow-hidden rounded-lg border border-white/10 bg-stone-950">
-      <div className="relative aspect-[4/5] overflow-hidden">
-        <img
-          src={show.image}
-          alt=""
-          className="h-full w-full object-cover opacity-75 transition duration-500 group-hover:scale-105 group-hover:opacity-95"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
-        <div className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-bold text-stone-100">
-          0{index + 1}
+    <header className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
+            <span className="flex h-16 w-44 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white shadow-lg shadow-black/30 sm:h-20 sm:w-56">
+              <img
+                src={logoImage}
+                alt="Drums2Streets"
+                className="h-full w-full scale-[1.42] object-contain"
+              />
+            </span>
+          </Link>
+          <Link
+            href="/#kontakt"
+            className="rounded-md bg-[#155a9f] px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#155a9f]/30 transition hover:bg-[#2f7dca] sm:hidden"
+          >
+            Anfrage
+          </Link>
         </div>
-        <div className="absolute inset-x-5 bottom-5">
-          <p className="mb-2 text-xs font-bold uppercase text-[#7db7ee]">
-            {show.label}
-          </p>
-          <h3 className="text-3xl font-black text-white">{show.name}</h3>
+
+        <nav className="grid grid-cols-2 gap-2 text-center font-black uppercase text-white sm:grid-cols-3 lg:flex lg:items-center">
+          <Link className={navLinkClass} href="/ueber-uns">
+            Über uns
+          </Link>
+          {showFormats.map((show) => (
+            <Link className={navLinkClass} href={show.path} key={show.name}>
+              {show.name}
+            </Link>
+          ))}
+          <Link className={navLinkClass} href="/become-a-drummer">
+            Become a Drummer
+          </Link>
+          <Link className={navLinkClass} href="/#kontakt">
+            Kontakt
+          </Link>
+        </nav>
+
+        <Link
+          href="/#kontakt"
+          className="hidden rounded-md bg-[#155a9f] px-5 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#155a9f]/30 transition hover:bg-[#2f7dca] lg:inline-flex"
+        >
+          Anfrage
+        </Link>
+      </div>
+    </header>
+  )
+}
+
+function PageShell({ children }: { children: ReactNode }) {
+  return (
+    <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
+      {children}
+      <Footer />
+    </main>
+  )
+}
+
+function Hero({ children }: { children: ReactNode }) {
+  return (
+    <section className="relative min-h-[92svh] border-b border-white/10">
+      <video
+        className="absolute inset-0 h-full w-full object-cover opacity-60"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster={heroImage}
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#070707]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_72%,rgba(47,125,202,0.36),transparent_34%),radial-gradient(circle_at_78%_22%,rgba(21,90,159,0.32),transparent_30%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#070707] to-transparent" />
+      <div className="relative mx-auto flex min-h-[92svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
+        <Header />
+        {children}
+      </div>
+    </section>
+  )
+}
+
+function PageHero({
+  eyebrow,
+  title,
+  intro,
+  image,
+}: {
+  eyebrow: string
+  title: string
+  intro: string
+  image: string
+}) {
+  return (
+    <section className="relative min-h-[70svh] border-b border-white/10">
+      <img
+        src={image}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover opacity-55"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-[#070707]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(47,125,202,0.32),transparent_32%)]" />
+      <div className="relative mx-auto flex min-h-[70svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
+        <Header />
+        <div className="flex flex-1 items-end pb-12 pt-24">
+          <div className="max-w-4xl">
+            <p className="mb-5 text-sm font-black uppercase text-[#b9dcff]">
+              {eyebrow}
+            </p>
+            <h1 className="text-5xl font-black uppercase leading-[0.9] text-white drop-shadow-2xl sm:text-7xl md:text-8xl">
+              {title}
+            </h1>
+            <p className="mt-8 max-w-2xl border-l-4 border-[#2f7dca] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
+              {intro}
+            </p>
+          </div>
         </div>
       </div>
-      <p className="p-5 text-sm leading-6 text-stone-300">{show.description}</p>
-    </article>
+    </section>
+  )
+}
+
+function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
+  return (
+    <Link
+      href={show.path}
+      className="group block overflow-hidden rounded-lg border border-white/10 bg-stone-950 transition hover:-translate-y-1 hover:border-[#2f7dca]/60"
+    >
+      <article>
+        <div className="relative aspect-[4/5] overflow-hidden">
+          <img
+            src={show.image}
+            alt=""
+            className="h-full w-full object-cover opacity-75 transition duration-500 group-hover:scale-105 group-hover:opacity-95"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+          <div className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-bold text-stone-100">
+            0{index + 1}
+          </div>
+          <div className="absolute inset-x-5 bottom-5">
+            <p className="mb-2 text-xs font-bold uppercase text-[#7db7ee]">
+              {show.label}
+            </p>
+            <h3 className="text-3xl font-black text-white">{show.name}</h3>
+          </div>
+        </div>
+        <div className="p-5">
+          <p className="text-sm leading-6 text-stone-300">{show.description}</p>
+          <p className="mt-5 text-xs font-black uppercase text-[#b9dcff]">
+            Show entdecken
+          </p>
+        </div>
+      </article>
+    </Link>
   )
 }
 
@@ -303,7 +555,7 @@ function ZohoBookingForm() {
             <FormField label="Firma" maxLength={100} name="Company" />
             <FormField label="Vorname" maxLength={40} name="First Name" required />
             <FormField label="Nachname" maxLength={80} name="Last Name" required />
-            <FormField label="Straße" maxLength={250} name="Street" required />
+            <FormField label="Strasse" maxLength={250} name="Street" required />
             <FormField label="Postleitzahl" maxLength={30} name="Zip Code" required />
             <FormField label="Stadt" maxLength={30} name="City" required />
             <FormField label="Land" maxLength={30} name="Country" />
@@ -360,268 +612,506 @@ function ZohoBookingForm() {
   )
 }
 
-function App() {
+function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
-      <section className="relative min-h-[92svh] border-b border-white/10">
-        <video
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster={heroImage}
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#070707]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_72%,rgba(47,125,202,0.36),transparent_34%),radial-gradient(circle_at_78%_22%,rgba(21,90,159,0.32),transparent_30%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#070707] to-transparent" />
-        <div className="relative mx-auto flex min-h-[92svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
-          <header className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5">
-            <div className="flex items-center justify-between gap-4">
-              <a
-                href="#"
-                className="inline-flex items-center gap-3"
-                aria-label="Drums2Streets"
+    <PageShell>
+      <Hero>
+        <div className="flex flex-1 items-end pb-12 pt-28 md:pb-16">
+          <div className="max-w-5xl">
+            <p className="mb-5 text-sm font-black uppercase text-[#b9dcff]">
+              Live. Laut. Präzise.
+            </p>
+            <h1 className="max-w-5xl text-6xl font-black uppercase leading-[0.88] text-white drop-shadow-2xl sm:text-7xl md:text-8xl lg:text-9xl">
+              Rhythmus, der Events in Bewegung bringt.
+            </h1>
+            <p className="mt-8 max-w-2xl border-l-4 border-[#2f7dca] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
+              Drums2Streets liefert explosive Live-Performance für Festivals,
+              Firmenanlässe, Privatfeiern und Bühnen, die mehr als Musik
+              brauchen.
+            </p>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/#kontakt"
+                className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/35 transition hover:bg-[#2f7dca]"
               >
-                <span className="flex h-16 w-44 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white shadow-lg shadow-black/30 sm:h-20 sm:w-56">
-                  <img
-                    src={logoImage}
-                    alt="Drums2Streets"
-                    className="h-full w-full scale-[1.42] object-contain"
-                  />
-                </span>
-            </a>
-              <nav className="hidden items-center gap-2 text-sm font-black uppercase text-white md:flex">
-                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#shows">
-                  Shows
-                </a>
-                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#buchen">
-                  Buchen
-                </a>
-                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#galerie">
-                  Galerie
-                </a>
-                <a className="rounded-md px-4 py-3 transition hover:bg-white/10 hover:text-[#b9dcff]" href="#kontakt">
-                  Kontakt
-                </a>
-              </nav>
-              <a
-                href="#kontakt"
-                className="hidden rounded-md bg-[#155a9f] px-5 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#155a9f]/30 transition hover:bg-[#2f7dca] sm:inline-flex"
+                Anfrage starten
+              </Link>
+              <Link
+                href="/shows/wild-west"
+                className="inline-flex justify-center rounded-md border border-white/35 bg-black/35 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
               >
-                Anfrage
-              </a>
+                Shows ansehen
+              </Link>
             </div>
-          </header>
-
-          <div className="flex flex-1 items-end pb-12 pt-28 md:pb-16">
-            <div className="max-w-5xl">
-              <p className="mb-5 text-sm font-black uppercase text-[#b9dcff]">
-                Live. Laut. Präzise.
-              </p>
-              <h1 className="max-w-5xl text-6xl font-black uppercase leading-[0.88] text-white drop-shadow-2xl sm:text-7xl md:text-8xl lg:text-9xl">
-                Rhythmus, der Events in Bewegung bringt.
-              </h1>
-              <p className="mt-8 max-w-2xl border-l-4 border-[#2f7dca] pl-5 text-lg font-semibold leading-8 text-stone-100 md:text-xl">
-                Drums2Streets liefert explosive Live-Performance für Festivals,
-                Firmenanlässe, Privatfeiern und Bühnen, die mehr als Musik
-                brauchen.
-              </p>
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#kontakt"
-                  className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/35 transition hover:bg-[#2f7dca]"
+            <div className="mt-10 grid max-w-2xl grid-cols-3 gap-3 text-center sm:text-left">
+              {['Festival', 'Corporate', 'Privat'].map((item) => (
+                <div
+                  className="border-t border-white/20 pt-3 text-xs font-black uppercase text-stone-200"
+                  key={item}
                 >
-                  Anfrage starten
-                </a>
-                <a
-                  href="#shows"
-                  className="inline-flex justify-center rounded-md border border-white/35 bg-black/35 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
-                >
-                  Showformate ansehen
-                </a>
-              </div>
-              <div className="mt-10 grid max-w-2xl grid-cols-3 gap-3 text-center sm:text-left">
-                {['Festival', 'Corporate', 'Privat'].map((item) => (
-                  <div
-                    className="border-t border-white/20 pt-3 text-xs font-black uppercase text-stone-200"
-                    key={item}
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </Hero>
 
-      <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
-        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
-          <div>
-            <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
-              Kurzprofil
-            </p>
-            <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
-              Professionelle Drum Shows mit Schweizer Präzision.
-            </h2>
-          </div>
-          <p className="text-base leading-8 text-stone-300 md:text-lg">
-            Wir verbinden perkussive Energie, Choreografie und eine klare
-            visuelle Sprache. Das Resultat ist eine Show, die auf grossen
-            Bühnen trägt und bei exklusiven Anlässen genauso stark funktioniert.
-          </p>
-        </div>
-      </section>
+      <IntroSection />
+      <AboutTeaser />
+      <ShowsSection />
+      <WhyBookSection />
+      <GallerySection />
+      <CrewSection />
+      <BecomeADrummerSection expanded={false} />
+      <ContactSection />
+    </PageShell>
+  )
+}
 
-      <section
-        id="shows"
-        className="border-y border-white/10 bg-stone-950/70 px-5 py-16 sm:px-8 md:py-24 lg:px-10"
-      >
-        <div className="mx-auto max-w-7xl">
-          <SectionHeader
-            eyebrow="Showformate"
-            title="Drei Welten, ein kompromissloser Puls."
-            text="Jedes Format ist als starker Programmpunkt, Opening, Highlight oder Überraschungsmoment einsetzbar."
-          />
-          <div className="grid gap-5 md:grid-cols-3">
-            {showFormats.map((show, index) => (
-              <ShowCard key={show.name} show={show} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="buchen"
-        className="px-5 py-16 sm:px-8 md:py-24 lg:px-10"
-      >
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
-              Warum buchen
-            </p>
-            <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
-              Für Veranstalter, die einen echten Höhepunkt setzen wollen.
-            </h2>
-          </div>
-          <div className="grid gap-x-10 md:grid-cols-2">
-            {benefits.map((benefit) => (
-              <BenefitItem key={benefit.title} benefit={benefit} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="galerie"
-        className="border-y border-white/10 bg-black px-5 py-16 sm:px-8 md:py-24 lg:px-10"
-      >
-        <div className="mx-auto max-w-7xl">
-          <SectionHeader
-            eyebrow="Galerie"
-            title="Live-Momente, Bühnenenergie und grosse Bilder."
-            text="Die Galerie zeigt Gruppen- und Showfotos aus verschiedenen Auftritten. Einzelportraits bleiben bewusst in der Crew-Sektion."
-          />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {groupGalleryImages.map((image, index) => (
-              <div
-                className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 bg-stone-900"
-                key={image}
-              >
-                <img
-                  src={image}
-                  alt={`Drums2Streets Gruppenfoto ${index + 1}`}
-                  className="h-full w-full object-cover opacity-85 transition duration-500 hover:scale-105 hover:opacity-100"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-sm font-black text-white">
-                    Drums2Streets live
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeader
-            eyebrow="Crew"
-            title="Menschen hinter dem Sound."
-          />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {members.map((member) => (
-              <article
-                className="overflow-hidden rounded-lg border border-white/10 bg-stone-950"
-                key={member.name}
-              >
-                <div className="aspect-[3/4] overflow-hidden">
-                  {member.image ? (
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="h-full w-full object-cover opacity-90"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#155a9f]/35 via-stone-900 to-black px-5 text-center">
-                      <span className="text-4xl font-black uppercase text-white">
-                        {member.name
-                          .split(' ')
-                          .map((part) => part[0])
-                          .join('')}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h3 className="text-sm font-black text-white">{member.name}</h3>
-                  {member.role ? (
-                    <p className="mt-1 text-xs font-bold uppercase text-[#7db7ee]">
-                      {member.role}
-                    </p>
-                  ) : null}
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="kontakt"
-        className="border-t border-white/10 px-5 py-16 sm:px-8 md:py-24 lg:px-10"
-      >
-        <div className="mx-auto mb-10 max-w-5xl text-center">
+function IntroSection() {
+  return (
+    <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
+        <div>
           <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
-            Kontakt
+            Kurzprofil
           </p>
-          <h2 className="text-4xl font-black leading-tight text-white sm:text-5xl md:text-6xl">
+          <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
+            Professionelle Drum Shows mit Schweizer Präzision.
+          </h2>
+        </div>
+        <p className="text-base leading-8 text-stone-300 md:text-lg">
+          Wir verbinden perkussive Energie, Choreografie und eine klare visuelle
+          Sprache. Das Resultat ist eine Show, die auf grossen Bühnen trägt und
+          bei exklusiven Anlässen genauso stark funktioniert.
+        </p>
+      </div>
+    </section>
+  )
+}
+
+function AboutTeaser() {
+  return (
+    <section className="border-y border-white/10 bg-black px-5 py-16 sm:px-8 md:py-24 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+        <div>
+          <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+            Über uns
+          </p>
+          <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
+            Von Streetdrumming inspiriert, in Kreuzlingen weiterentwickelt.
+          </h2>
+          <p className="mt-6 max-w-2xl text-base leading-8 text-stone-300 md:text-lg">
+            Drums2Streets verwandelt Plastikeimer, Regentonnen, Bauschutt und
+            Fundstücke von der Strasse in explosive Instrumente.
+          </p>
+          <Link
+            href="/ueber-uns"
+            className="mt-8 inline-flex rounded-md border border-white/20 px-6 py-4 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
+          >
+            Mehr erfahren
+          </Link>
+        </div>
+        <div className="overflow-hidden rounded-lg border border-white/10 bg-stone-950">
+          <img
+            src={banjoVolcanoImage}
+            alt=""
+            className="aspect-[16/10] h-full w-full object-cover opacity-85"
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ShowsSection() {
+  return (
+    <section
+      id="shows"
+      className="border-b border-white/10 bg-stone-950/70 px-5 py-16 sm:px-8 md:py-24 lg:px-10"
+    >
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader
+          eyebrow="Showformate"
+          title="Drei Welten, ein kompromissloser Puls."
+          text="Jedes Format ist als starker Programmpunkt, Opening, Highlight oder Überraschungsmoment einsetzbar."
+        />
+        <div className="grid gap-5 md:grid-cols-3">
+          {showFormats.map((show, index) => (
+            <ShowCard key={show.name} show={show} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function WhyBookSection() {
+  return (
+    <section
+      id="buchen"
+      className="px-5 py-16 sm:px-8 md:py-24 lg:px-10"
+    >
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+            Warum buchen
+          </p>
+          <h2 className="text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
+            Für Veranstalter, die einen echten Höhepunkt setzen wollen.
+          </h2>
+        </div>
+        <div className="grid gap-x-10 md:grid-cols-2">
+          {benefits.map((benefit) => (
+            <BenefitItem key={benefit.title} benefit={benefit} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function GallerySection() {
+  return (
+    <section
+      id="galerie"
+      className="border-y border-white/10 bg-black px-5 py-16 sm:px-8 md:py-24 lg:px-10"
+    >
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader
+          eyebrow="Galerie"
+          title="Live-Momente, Bühnenenergie und grosse Bilder."
+          text="Die Galerie zeigt Gruppen- und Showfotos aus verschiedenen Auftritten. Einzelportraits bleiben bewusst in der Crew-Sektion."
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {groupGalleryImages.map((image, index) => (
+            <div
+              className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 bg-stone-900"
+              key={image}
+            >
+              <img
+                src={image}
+                alt={`Drums2Streets Gruppenfoto ${index + 1}`}
+                className="h-full w-full object-cover opacity-85 transition duration-500 hover:scale-105 hover:opacity-100"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                <p className="text-sm font-black text-white">Drums2Streets live</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CrewSection() {
+  return (
+    <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader eyebrow="Crew" title="Menschen hinter dem Sound." />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {members.map((member) => (
+            <article
+              className="overflow-hidden rounded-lg border border-white/10 bg-stone-950"
+              key={member.name}
+            >
+              <div className="aspect-[3/4] overflow-hidden">
+                {member.image ? (
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="h-full w-full object-cover opacity-90"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#155a9f]/35 via-stone-900 to-black px-5 text-center">
+                    <span className="text-4xl font-black uppercase text-white">
+                      {member.name
+                        .split(' ')
+                        .map((part) => part[0])
+                        .join('')}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="p-4">
+                <h3 className="text-sm font-black text-white">{member.name}</h3>
+                {member.role ? (
+                  <p className="mt-1 text-xs font-bold uppercase text-[#7db7ee]">
+                    {member.role}
+                  </p>
+                ) : null}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function BecomeADrummerSection({ expanded }: { expanded: boolean }) {
+  return (
+    <section
+      className={
+        expanded
+          ? 'px-5 py-16 sm:px-8 md:py-24 lg:px-10'
+          : 'border-t border-white/10 bg-stone-950/70 px-5 py-16 sm:px-8 md:py-24 lg:px-10'
+      }
+    >
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader
+          eyebrow="Nachwuchs"
+          title="Become a Drummer"
+          text="Du möchtest selber trommeln lernen? Hier findest du nützliche Links, die dich deinem Ziel ein Stück näherbringen."
+        />
+        <div className="grid gap-5 md:grid-cols-3">
+          {drummerLinks.map((link) => (
+            <a
+              className="group rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-1 hover:border-[#2f7dca]/60"
+              href={link.url}
+              key={link.title}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <p className="mb-4 text-xs font-bold uppercase text-[#7db7ee]">
+                Externer Link
+              </p>
+              <h3 className="text-xl font-black leading-tight text-white">
+                {link.title}
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-stone-300">
+                {link.description}
+              </p>
+              <p className="mt-6 text-xs font-black uppercase text-[#b9dcff]">
+                Website öffnen
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ContactCta() {
+  return (
+    <section className="border-t border-white/10 bg-black px-5 py-16 sm:px-8 md:py-20 lg:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 rounded-lg border border-white/10 bg-stone-950 p-6 md:flex-row md:items-center md:justify-between md:p-8">
+        <div>
+          <p className="mb-3 text-xs font-bold uppercase text-[#2f7dca]">
+            Booking
+          </p>
+          <h2 className="text-3xl font-black text-white">
             Bereit für einen Auftritt, der bleibt?
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-stone-300 md:text-lg">
-            Füllen Sie die Anfrage aus. Wir melden uns mit einer passenden
-            Empfehlung für Event, Bühne und Ablauf.
-          </p>
         </div>
-        <ZohoBookingForm />
-      </section>
+        <Link
+          href="/#kontakt"
+          className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/25 transition hover:bg-[#2f7dca]"
+        >
+          Anfrage starten
+        </Link>
+      </div>
+    </section>
+  )
+}
 
-      <footer className="border-t border-white/10 px-5 py-8 text-sm text-stone-500 sm:px-8 lg:px-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+function ContactSection() {
+  return (
+    <section
+      id="kontakt"
+      className="border-t border-white/10 px-5 py-16 sm:px-8 md:py-24 lg:px-10"
+    >
+      <div className="mx-auto mb-10 max-w-5xl text-center">
+        <p className="mb-4 text-xs font-bold uppercase text-[#2f7dca]">
+          Kontakt
+        </p>
+        <h2 className="text-4xl font-black leading-tight text-white sm:text-5xl md:text-6xl">
+          Bereit für einen Auftritt, der bleibt?
+        </h2>
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-stone-300 md:text-lg">
+          Füllen Sie die Anfrage aus. Wir melden uns mit einer passenden
+          Empfehlung für Event, Bühne und Ablauf.
+        </p>
+      </div>
+      <ZohoBookingForm />
+    </section>
+  )
+}
+
+function AboutPage() {
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow="Über uns"
+        image={banjoVolcanoImage}
+        intro="Den Streetdrummern in Chicago und New York City nachempfunden, verwandelt Drums2Streets Fundstücke der Strasse in explosive Instrumente."
+        title="Über uns"
+      />
+      <TextPageSection>
+        <ArticleBlock title="Drums2Streets">
+          <p>
+            Den Streetdrummern in Chicago und New York City nachempfunden,
+            trommeln Drums2Streets hauptsächlich auf Plastikeimern,
+            Regentonnen, Bauschutt und dem auf den Strassen auffindbaren Abfall,
+            der zu explosiven Instrumenten umfunktioniert wird. Was daraus
+            entsteht, lässt aufhorchen und staunen: eine abwechslungsreiche
+            Mischung aus pulsierenden Rhythmen und gekonnter
+            Schlegel-Akrobatik.
+          </p>
+        </ArticleBlock>
+        <ArticleBlock title="Leidenschaftliche Trommelkunst">
+          <p>
+            Die neun jungen Männer und Frauen im Alter zwischen 18 und 29 Jahren
+            verbindet eine gemeinsame Leidenschaft: das Trommeln. Sie alle
+            kennen sich vom Tambourenverein Kreuzlingen, wo sie bereits als
+            Kinder das Trommeln für sich entdeckten. Die Idee zu Drums2Streets
+            stammt ursprünglich von Angelo Razzino. Er liess sich vor ein paar
+            Jahren bei einer USA-Reise von den dortigen Strassendrummern
+            inspirieren. Zu Hause präsentierte er seine Idee den
+            Trommler-Kollegen und gründete seine eigene Drummergruppe:
+            Drums2Streets war geboren. Per 2026 hat Angelo Razzino die
+            Bandleitung an Marc Hobi übergeben, der Drums2Streets heute als
+            Bandleader weiterführt.
+          </p>
+        </ArticleBlock>
+        <ArticleBlock title="Von NYC nach Kreuzlingen">
+          <p>
+            Wie ihre Vorbilder in New York City spielen auch die innovativen
+            Kreuzlinger auf Abfall. Ob alte Pfannen, Regentonnen oder
+            Umhängetrommeln: sie bauen alle Instrumente selber und entwickeln
+            immer wieder neue Ideen. Gemeinsam entstand auch die Idee zum
+            abendfüllenden Programm “Roads of America”, das aus den drei Shows
+            “New York”, “Wild West” und “Las Vegas” besteht. Mit dem
+            Tourneeprogramm “Roads of America” wagen die neun Drummer den
+            nächsten grossen Schritt und beweisen, dass Trommeln eben doch sexy
+            ist.
+          </p>
+        </ArticleBlock>
+      </TextPageSection>
+      <ContactCta />
+    </PageShell>
+  )
+}
+
+function ShowPage({ show }: { show: ShowFormat }) {
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow="Show"
+        image={show.image}
+        intro={show.intro}
+        title={show.name}
+      />
+      <TextPageSection>
+        <ArticleBlock title={show.name}>
+          {show.content.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </ArticleBlock>
+        <div className="mt-12 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/#kontakt"
+            className="inline-flex justify-center rounded-md bg-[#155a9f] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#155a9f]/25 transition hover:bg-[#2f7dca]"
+          >
+            Show anfragen
+          </Link>
+          <Link
+            href="/#shows"
+            className="inline-flex justify-center rounded-md border border-white/20 px-7 py-5 text-sm font-black uppercase text-white transition hover:border-[#7db7ee] hover:text-[#b9dcff]"
+          >
+            Zurück zu den Shows
+          </Link>
+        </div>
+      </TextPageSection>
+    </PageShell>
+  )
+}
+
+function BecomeADrummerPage() {
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow="Nachwuchs"
+        image={supertalentImage}
+        intro="Du möchtest selber trommeln lernen? Hier findest du nützliche Links, die dich deinem Ziel ein Stück näherbringen."
+        title="Become a Drummer"
+      />
+      <BecomeADrummerSection expanded />
+      <ContactCta />
+    </PageShell>
+  )
+}
+
+function TextPageSection({ children }: { children: ReactNode }) {
+  return (
+    <section className="px-5 py-16 sm:px-8 md:py-24 lg:px-10">
+      <div className="mx-auto max-w-4xl">{children}</div>
+    </section>
+  )
+}
+
+function ArticleBlock({
+  title,
+  children,
+}: {
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <article className="border-t border-white/10 py-10 first:border-t-0 first:pt-0">
+      <h2 className="mb-6 text-3xl font-black text-white">{title}</h2>
+      <div className="space-y-6 text-lg leading-8 text-stone-300">{children}</div>
+    </article>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-white/10 px-5 py-8 text-sm text-stone-500 sm:px-8 lg:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <Link href="/" className="inline-flex w-fit">
           <img
             src={logoImage}
             alt="Drums2Streets"
             className="h-12 w-fit scale-110 rounded-sm bg-white object-contain"
           />
-          <p>Premium Drum Shows aus der Schweiz</p>
-        </div>
-      </footer>
-    </main>
+        </Link>
+        <p>Premium Drum Shows aus der Schweiz</p>
+      </div>
+    </footer>
   )
+}
+
+function App() {
+  const [route, setRoute] = useState<RoutePath>(getPath)
+
+  useEffect(() => {
+    function handlePopState() {
+      setRoute(getPath())
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  const currentShow = showFormats.find((show) => show.path === route)
+
+  if (route === '/ueber-uns') {
+    return <AboutPage />
+  }
+
+  if (route === '/become-a-drummer') {
+    return <BecomeADrummerPage />
+  }
+
+  if (currentShow) {
+    return <ShowPage show={currentShow} />
+  }
+
+  return <HomePage />
 }
 
 export default App
