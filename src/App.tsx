@@ -145,7 +145,7 @@ const benefits: Benefit[] = [
 
 const members: Member[] = [
   { name: 'Marc Hobi', role: 'Bandleader' },
-  { name: 'Fabian Diehm' },
+  { name: 'Fabian Diem' },
   { name: 'Andrin Baer', image: andrinImage },
   { name: 'Angelo Razzino', image: angeloImage },
   { name: 'Daniel Rothammer', image: danielImage },
@@ -372,6 +372,7 @@ function PageShell({ children }: { children: ReactNode }) {
     <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
       {children}
       <FloatingBookingButton />
+      <ScrollToTopButton />
       <Footer />
     </main>
   )
@@ -902,7 +903,7 @@ function BecomeADrummerSection({ expanded }: { expanded: boolean }) {
         <div className="grid gap-5 md:grid-cols-3">
           {drummerLinks.map((link) => (
             <a
-              className="group rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-1 hover:border-[#b99b5d]/60"
+              className="group flex h-full flex-col rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-1 hover:border-[#b99b5d]/60"
               href={link.url}
               key={link.title}
               rel="noreferrer"
@@ -917,7 +918,7 @@ function BecomeADrummerSection({ expanded }: { expanded: boolean }) {
               <p className="mt-4 text-sm leading-6 text-stone-300">
                 {link.description}
               </p>
-              <p className="mt-6 text-xs font-black uppercase text-[#ead8a8]">
+              <p className="mt-auto pt-6 text-xs font-black uppercase text-[#ead8a8]">
                 Website öffnen
               </p>
             </a>
@@ -965,8 +966,7 @@ function ContactSection() {
           Bereit für einen Auftritt, der bleibt?
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-stone-300 md:text-lg">
-          Füllen Sie die Anfrage aus. Wir melden uns mit einer passenden
-          Empfehlung für Event, Bühne und Ablauf.
+          Füllen Sie aus und wir melden uns.
         </p>
       </div>
       <ZohoBookingForm />
@@ -978,10 +978,27 @@ function FloatingBookingButton() {
   return (
     <Link
       href="/#kontakt"
-      className="fixed bottom-5 right-5 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-6"
+      className="fixed bottom-5 right-20 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-24"
     >
       Show buchen
     </Link>
+  )
+}
+
+function ScrollToTopButton() {
+  function handleClick() {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return (
+    <button
+      aria-label="Nach oben scrollen"
+      className="fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-md border border-white/10 bg-black/75 text-lg font-black text-white shadow-2xl shadow-black/50 transition hover:border-[#b99b5d] hover:text-[#ead8a8] sm:bottom-6 sm:right-6"
+      onClick={handleClick}
+      type="button"
+    >
+      ↑
+    </button>
   )
 }
 
