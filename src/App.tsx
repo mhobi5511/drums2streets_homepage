@@ -405,11 +405,20 @@ function Header() {
 }
 
 function PageShell({ children }: { children: ReactNode }) {
-  const [showFloatingButtons, setShowFloatingButtons] = useState(false)
+  const [showFloatingBookingButton, setShowFloatingBookingButton] = useState(false)
+  const [showScrollToTopButton, setShowScrollToTopButton] = useState(false)
 
   useEffect(() => {
     function updateFloatingButtons() {
       const isDesktop = window.matchMedia('(min-width: 640px)').matches
+      const contactSection = document.getElementById('kontakt')
+      const contactRect = contactSection?.getBoundingClientRect()
+      const visibleContactSection =
+        contactRect !== undefined &&
+        contactRect.bottom > 0 &&
+        contactRect.right > 0 &&
+        contactRect.top < window.innerHeight &&
+        contactRect.left < window.innerWidth
       const visibleInlineCta = Array.from(
         document.querySelectorAll<HTMLAnchorElement>('a[href="/#kontakt"]:not([data-floating-cta])'),
       ).some((link) => {
@@ -431,7 +440,8 @@ function PageShell({ children }: { children: ReactNode }) {
         )
       })
 
-      setShowFloatingButtons(isDesktop || !visibleInlineCta)
+      setShowFloatingBookingButton(!visibleContactSection && (isDesktop || !visibleInlineCta))
+      setShowScrollToTopButton(window.scrollY > 8)
     }
 
     updateFloatingButtons()
@@ -447,8 +457,8 @@ function PageShell({ children }: { children: ReactNode }) {
   return (
     <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
       {children}
-      <FloatingBookingButton visible={showFloatingButtons} />
-      <ScrollToTopButton visible={showFloatingButtons} />
+      <FloatingBookingButton visible={showFloatingBookingButton} />
+      <ScrollToTopButton visible={showScrollToTopButton} />
       <Footer />
     </main>
   )
