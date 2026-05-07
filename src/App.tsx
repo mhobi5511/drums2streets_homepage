@@ -320,11 +320,30 @@ function SectionHeader({
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
   const navLinkClass =
     'rounded-md px-4 py-3 text-sm transition hover:bg-white/10 hover:text-[#ead8a8]'
 
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      return
+    }
+
+    function closeMenuOnOutsideTap(event: PointerEvent) {
+      if (!headerRef.current?.contains(event.target as Node)) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', closeMenuOnOutsideTap)
+
+    return () => {
+      document.removeEventListener('pointerdown', closeMenuOnOutsideTap)
+    }
+  }, [mobileMenuOpen])
+
   return (
-    <header className="flex flex-col gap-3 lg:flex-row lg:items-center">
+    <header ref={headerRef} className="flex flex-col gap-3 lg:flex-row lg:items-center">
       <div className="flex items-center justify-between overflow-visible lg:flex lg:h-[96px] lg:shrink-0 lg:items-center">
           <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
           <span className="relative flex h-16 w-[33vw] max-w-[33vw] items-center justify-center overflow-visible sm:h-24 sm:w-64 sm:max-w-none lg:h-[96px] lg:w-72">
