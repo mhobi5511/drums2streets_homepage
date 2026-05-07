@@ -287,18 +287,17 @@ function SectionHeader({
 
 function Header() {
   const navLinkClass =
-    'rounded-md px-3 py-3 text-xs transition hover:bg-white/10 hover:text-[#ead8a8] lg:px-4'
+    'rounded-md px-4 py-3 text-sm transition hover:bg-white/10 hover:text-[#ead8a8]'
 
   return (
-    <header className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center justify-between gap-4">
+    <header className="flex flex-col gap-3 lg:flex-row lg:items-center">
+      <div className="flex items-center justify-between lg:block lg:shrink-0">
           <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
-            <span className="relative flex h-16 w-44 items-center justify-center sm:h-20 sm:w-56">
+          <span className="relative flex h-20 w-52 items-center justify-center sm:h-24 sm:w-64 lg:h-24 lg:w-72">
               <img
                 src={logoImage}
                 alt="Drums2Streets"
-                className="absolute h-24 w-64 max-w-none object-contain drop-shadow-2xl sm:h-32 sm:w-80"
+              className="absolute h-28 w-72 max-w-none object-contain drop-shadow-2xl sm:h-36 sm:w-96 lg:h-40 lg:w-[28rem]"
               />
             </span>
           </Link>
@@ -308,17 +307,29 @@ function Header() {
           >
             Anfrage
           </Link>
-        </div>
+      </div>
 
-        <nav className="grid grid-cols-2 gap-2 text-center font-black uppercase text-white sm:grid-cols-3 lg:flex lg:items-center">
+      <div className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5 lg:flex lg:flex-1 lg:items-center lg:justify-between">
+        <nav className="grid grid-cols-2 gap-2 text-center font-black uppercase text-white sm:grid-cols-4 lg:flex lg:items-center">
           <Link className={navLinkClass} href="/ueber-uns">
             Über uns
           </Link>
-          {showFormats.map((show) => (
-            <Link className={navLinkClass} href={show.path} key={show.name}>
-              {show.name}
-            </Link>
-          ))}
+          <details className="group relative">
+            <summary className="flex cursor-pointer list-none items-center justify-center rounded-md px-4 py-3 text-sm transition hover:bg-white/10 hover:text-[#ead8a8]">
+              Showformate
+            </summary>
+            <div className="mt-2 grid gap-1 rounded-md border border-white/10 bg-black/95 p-2 shadow-2xl shadow-black/50 lg:absolute lg:left-0 lg:top-full lg:z-20 lg:min-w-48">
+              {showFormats.map((show) => (
+                <Link
+                  className="rounded-md px-4 py-3 text-sm text-white transition hover:bg-white/10 hover:text-[#ead8a8]"
+                  href={show.path}
+                  key={show.name}
+                >
+                  {show.name}
+                </Link>
+              ))}
+            </div>
+          </details>
           <Link className={navLinkClass} href="/become-a-drummer">
             Become a Drummer
           </Link>
