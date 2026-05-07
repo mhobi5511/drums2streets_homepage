@@ -294,11 +294,11 @@ function Header() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
-            <span className="flex h-16 w-44 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-black shadow-lg shadow-black/30 sm:h-20 sm:w-56">
+            <span className="relative flex h-16 w-44 items-center justify-center sm:h-20 sm:w-56">
               <img
                 src={logoImage}
                 alt="Drums2Streets"
-                className="h-full w-full scale-110 object-contain"
+                className="absolute h-24 w-64 max-w-none object-contain drop-shadow-2xl sm:h-32 sm:w-80"
               />
             </span>
           </Link>
@@ -1080,7 +1080,7 @@ function Footer() {
           <img
             src={logoImage}
             alt="Drums2Streets"
-            className="h-12 w-fit scale-110 rounded-sm bg-black object-contain"
+            className="h-16 w-fit object-contain drop-shadow-2xl"
           />
         </Link>
         <p>Premium Drum Shows aus der Schweiz</p>
