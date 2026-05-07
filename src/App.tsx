@@ -145,10 +145,10 @@ const benefits: Benefit[] = [
 
 const members: Member[] = [
   { name: 'Marc Hobi', role: 'Bandleader' },
-  { name: 'Fabian Diem' },
   { name: 'Andrin Baer', image: andrinImage },
   { name: 'Angelo Razzino', image: angeloImage },
   { name: 'Daniel Rothammer', image: danielImage },
+  { name: 'Fabian Diem' },
   { name: 'Nico Ernst', image: nicoImage },
   { name: 'Timon Willi', image: timonImage },
 ]
@@ -304,6 +304,7 @@ function SectionHeader({
 }
 
 function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navLinkClass =
     'rounded-md px-4 py-3 text-sm transition hover:bg-white/10 hover:text-[#ead8a8]'
 
@@ -319,16 +320,37 @@ function Header() {
               />
             </span>
           </Link>
-          <Link
-            href="/#kontakt"
-            className="rounded-md bg-[#8f6b32] px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#8f6b32]/30 transition hover:bg-[#b99b5d] sm:hidden"
-          >
-            Show buchen
-          </Link>
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link
+              href="/#kontakt"
+              className="rounded-md bg-[#8f6b32] px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#8f6b32]/30 transition hover:bg-[#b99b5d]"
+            >
+              Show buchen
+            </Link>
+            <button
+              aria-expanded={mobileMenuOpen}
+              aria-label="Navigation öffnen"
+              className="grid h-11 w-11 place-items-center rounded-md border border-white/15 bg-black/70 text-white"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              type="button"
+            >
+              <span className="grid gap-1.5">
+                <span className="block h-0.5 w-5 bg-current" />
+                <span className="block h-0.5 w-5 bg-current" />
+                <span className="block h-0.5 w-5 bg-current" />
+              </span>
+            </button>
+          </div>
       </div>
 
-      <div className="rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5 lg:mt-4 lg:flex lg:min-h-[70px] lg:flex-1 lg:items-center lg:justify-between">
-        <nav className="grid grid-cols-2 gap-2 text-center font-black uppercase text-white sm:grid-cols-4 lg:flex lg:items-center">
+      <div
+        className={`rounded-lg border border-white/15 bg-black/75 px-4 py-3 shadow-2xl shadow-black/50 backdrop-blur-md sm:px-5 lg:mt-4 lg:flex lg:min-h-[70px] lg:flex-1 lg:items-center lg:justify-between ${
+          mobileMenuOpen ? 'block' : 'hidden'
+        }`}
+      >
+        <nav
+          className="grid grid-cols-1 gap-2 text-center font-black uppercase text-white sm:grid-cols-2 lg:flex lg:items-center"
+        >
           <Link className={navLinkClass} href="/ueber-uns">
             Über uns
           </Link>
@@ -368,11 +390,29 @@ function Header() {
 }
 
 function PageShell({ children }: { children: ReactNode }) {
+  const [showFloatingButtons, setShowFloatingButtons] = useState(false)
+
+  useEffect(() => {
+    function updateFloatingButtons() {
+      const isDesktop = window.matchMedia('(min-width: 640px)').matches
+      setShowFloatingButtons(isDesktop || window.scrollY > window.innerHeight * 0.9)
+    }
+
+    updateFloatingButtons()
+    window.addEventListener('scroll', updateFloatingButtons, { passive: true })
+    window.addEventListener('resize', updateFloatingButtons)
+
+    return () => {
+      window.removeEventListener('scroll', updateFloatingButtons)
+      window.removeEventListener('resize', updateFloatingButtons)
+    }
+  }, [])
+
   return (
     <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
       {children}
-      <FloatingBookingButton />
-      <ScrollToTopButton />
+      <FloatingBookingButton visible={showFloatingButtons} />
+      <ScrollToTopButton visible={showFloatingButtons} />
       <Footer />
     </main>
   )
@@ -974,18 +1014,22 @@ function ContactSection() {
   )
 }
 
-function FloatingBookingButton() {
+function FloatingBookingButton({ visible }: { visible: boolean }) {
   return (
     <Link
       href="/#kontakt"
-      className="fixed bottom-5 right-20 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-24"
+      className={`fixed bottom-5 right-20 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-24 ${
+        visible
+          ? 'translate-y-0 opacity-100'
+          : 'pointer-events-none translate-y-4 opacity-0 sm:pointer-events-auto sm:translate-y-0 sm:opacity-100'
+      }`}
     >
       Show buchen
     </Link>
   )
 }
 
-function ScrollToTopButton() {
+function ScrollToTopButton({ visible }: { visible: boolean }) {
   function handleClick() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -993,7 +1037,11 @@ function ScrollToTopButton() {
   return (
     <button
       aria-label="Nach oben scrollen"
-      className="fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-md border border-white/10 bg-black/75 text-lg font-black text-white shadow-2xl shadow-black/50 transition hover:border-[#b99b5d] hover:text-[#ead8a8] sm:bottom-6 sm:right-6"
+      className={`fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-md border border-white/10 bg-black/75 text-lg font-black text-white shadow-2xl shadow-black/50 transition hover:border-[#b99b5d] hover:text-[#ead8a8] sm:bottom-6 sm:right-6 ${
+        visible
+          ? 'translate-y-0 opacity-100'
+          : 'pointer-events-none translate-y-4 opacity-0 sm:pointer-events-auto sm:translate-y-0 sm:opacity-100'
+      }`}
       onClick={handleClick}
       type="button"
     >
@@ -1131,7 +1179,7 @@ function ArticleBlock({
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 px-5 py-8 text-sm text-stone-500 sm:px-8 lg:px-10">
+    <footer className="border-t border-white/10 px-5 pb-28 pt-8 text-sm text-stone-500 sm:px-8 sm:py-8 lg:px-10">
       <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-3 sm:items-center">
         <Link href="/" className="inline-flex w-fit">
           <img
