@@ -63,21 +63,6 @@ type DrummerLink = {
 
 const showFormats: ShowFormat[] = [
   {
-    name: 'Swiss Made',
-    path: '/shows/swiss-made',
-    label: 'Tradition trifft Strasse',
-    description:
-      'Rohe Strassenrhythmen treffen auf Schweizer Traditionen, Jodel, Gloggen und selbstgebaute Instrumente.',
-    intro:
-      'Mit dieser Show kehrt Drums2Streets zurück zu seinen Wurzeln: den besonderen Traditionen der Schweiz.',
-    image: swissMadeImage,
-    content: [
-      'Mit dieser Show kehrt Drums2Streets zurück zu seinen Wurzeln: den besonderen Traditionen der Schweiz, wobei das Trommeln eine davon darstellt.',
-      'In dieser brandneuen Show verbinden wir die rohen Strassenrhythmen mit besonderen Highlights wie zum Beispiel einer herausragenden Jodlerin oder den charakteristischen “Gloggen”.',
-      'Dabei bleiben wir uns treu und bieten diese Show auf Instrumenten dar, welche aus Schrott und Baumaterialien selbst gebaut sind. Kontrast in seiner aufregendsten Form!',
-    ],
-  },
-  {
     name: 'Wild West',
     path: '/shows/wild-west',
     label: 'Staub, Tempo, Show',
@@ -90,6 +75,21 @@ const showFormats: ShowFormat[] = [
       'Das Amerika des 19. Jahrhunderts war geprägt von Pioniergeist und der Besiedelung des Wilden Westens.',
       'In der gleichen Zeit erreichte auch der Goldrausch seinen Höhepunkt. Aus den dunklen und stickigen Minen kommend, erwachen die Lebensgeister und steigern sich zu einer faszinierenden Trommelshow, welche in einem fulminanten Finale endet.',
       'Musiziert wird mit rustikalen Instrumenten wie alten Spitzhacken, Tonnen und Schaufeln, umrandet von explosiven Effekten. Doch nur zu trommeln wäre den jungen Künstlern zu einfach: Mitreissende Klänge, unterstützt durch schwindelerregende Schläger-Akrobatik und eine gekonnte Choreographie garantieren, dass kein Fuss ruhig und keine Hand ungeklatscht bleibt.',
+    ],
+  },
+  {
+    name: 'Swiss Made',
+    path: '/shows/swiss-made',
+    label: 'Tradition trifft Strasse',
+    description:
+      'Rohe Strassenrhythmen treffen auf Schweizer Traditionen, Jodel, Gloggen und selbstgebaute Instrumente.',
+    intro:
+      'Mit dieser Show kehrt Drums2Streets zurück zu seinen Wurzeln: den besonderen Traditionen der Schweiz.',
+    image: swissMadeImage,
+    content: [
+      'Mit dieser Show kehrt Drums2Streets zurück zu seinen Wurzeln: den besonderen Traditionen der Schweiz, wobei das Trommeln eine davon darstellt.',
+      'In dieser brandneuen Show verbinden wir die rohen Strassenrhythmen mit besonderen Highlights wie zum Beispiel einer herausragenden Jodlerin oder den charakteristischen “Gloggen”.',
+      'Dabei bleiben wir uns treu und bieten diese Show auf Instrumenten dar, welche aus Schrott und Baumaterialien selbst gebaut sind. Kontrast in seiner aufregendsten Form!',
     ],
   },
   {
