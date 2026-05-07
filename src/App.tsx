@@ -160,7 +160,7 @@ const drummerLinks: DrummerLink[] = [
   },
   {
     title: 'Schweizerischer Tambouren- und Pfeiferverband',
-    url: 'https://www.stpv.ch',
+    url: 'https://stpv-astf.ch/',
     description:
       'Offizielle Website des schweizerischen Tambouren- und Pfeiferverbandes.',
   },
