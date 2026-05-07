@@ -770,7 +770,7 @@ function ShowsSection() {
           title="Drei Welten, ein kompromissloser Puls."
           text="Jedes Format ist als starker Programmpunkt, Opening, Highlight oder Überraschungsmoment einsetzbar."
         />
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {showFormats.map((show, index) => (
             <ShowCard key={show.name} show={show} index={index} />
           ))}
