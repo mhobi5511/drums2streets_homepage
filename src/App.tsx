@@ -8,6 +8,7 @@ import banjoVolcanoImage from './assets/Drums2streets_Banjo Volcano.jpg'
 import supertalentImage from './assets/Supertalent D2S Abschlag.jpg'
 import lasVegasImage from './assets/D2S Las Vegas.jpg'
 import lasVegasBassImage from './assets/D2S E-Bass Las Vegas.jpg'
+import swissMadeImage from './assets/d2s swiss made.jpg'
 import heroVideo from './assets/D2Shomepage.mp4'
 import andrinImage from './assets/Andrin Baer sepia.jpg'
 import angeloImage from './assets/Angelo Razzino sepia.jpg'
@@ -18,6 +19,7 @@ import timonImage from './assets/Timon Willi sepia.jpg'
 type RoutePath =
   | '/'
   | '/ueber-uns'
+  | '/shows/swiss-made'
   | '/shows/wild-west'
   | '/shows/las-vegas'
   | '/shows/new-york'
@@ -60,6 +62,21 @@ type DrummerLink = {
 }
 
 const showFormats: ShowFormat[] = [
+  {
+    name: 'Swiss Made',
+    path: '/shows/swiss-made',
+    label: 'Tradition trifft Strasse',
+    description:
+      'Rohe Strassenrhythmen treffen auf Schweizer Traditionen, Jodel, Gloggen und selbstgebaute Instrumente.',
+    intro:
+      'Mit dieser Show kehrt Drums2Streets zurück zu seinen Wurzeln: den besonderen Traditionen der Schweiz.',
+    image: swissMadeImage,
+    content: [
+      'Mit dieser Show kehrt Drums2Streets zurück zu seinen Wurzeln: den besonderen Traditionen der Schweiz, wobei das Trommeln eine davon darstellt.',
+      'In dieser brandneuen Show verbinden wir die rohen Strassenrhythmen mit besonderen Highlights wie zum Beispiel einer herausragenden Jodlerin oder den charakteristischen “Gloggen”.',
+      'Dabei bleiben wir uns treu und bieten diese Show auf Instrumenten dar, welche aus Schrott und Baumaterialien selbst gebaut sind. Kontrast in seiner aufregendsten Form!',
+    ],
+  },
   {
     name: 'Wild West',
     path: '/shows/wild-west',
@@ -195,6 +212,7 @@ function getPath(): RoutePath {
   const knownRoutes: RoutePath[] = [
     '/',
     '/ueber-uns',
+    '/shows/swiss-made',
     '/shows/wild-west',
     '/shows/las-vegas',
     '/shows/new-york',
