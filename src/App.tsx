@@ -291,13 +291,13 @@ function Header() {
 
   return (
     <header className="flex flex-col gap-3 lg:flex-row lg:items-center">
-      <div className="flex items-center justify-between lg:flex lg:h-[76px] lg:shrink-0 lg:items-center">
+      <div className="flex items-center justify-between overflow-visible lg:flex lg:h-[96px] lg:shrink-0 lg:items-center">
           <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
-          <span className="relative flex h-20 w-52 items-center justify-center sm:h-24 sm:w-64 lg:h-[76px] lg:w-72">
+          <span className="relative flex h-20 w-52 items-center justify-center overflow-visible sm:h-24 sm:w-64 lg:h-[96px] lg:w-72">
               <img
                 src={logoImage}
                 alt="Drums2Streets"
-              className="absolute h-28 w-72 max-w-none object-contain sm:h-36 sm:w-96 lg:h-36 lg:w-[28rem]"
+              className="absolute top-1/2 h-28 w-72 max-w-none -translate-y-[42%] object-contain sm:h-36 sm:w-96 lg:h-36 lg:w-[28rem]"
               />
             </span>
           </Link>
