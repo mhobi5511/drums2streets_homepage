@@ -371,6 +371,7 @@ function PageShell({ children }: { children: ReactNode }) {
   return (
     <main className="min-h-screen overflow-hidden bg-[#070707] text-stone-100">
       {children}
+      <FloatingBookingButton />
       <Footer />
     </main>
   )
@@ -444,9 +445,9 @@ function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
   return (
     <Link
       href={show.path}
-      className="group block overflow-hidden rounded-lg border border-white/10 bg-stone-950 transition hover:-translate-y-1 hover:border-[#b99b5d]/60"
+      className="group block h-full overflow-hidden rounded-lg border border-white/10 bg-stone-950 transition hover:-translate-y-1 hover:border-[#b99b5d]/60"
     >
-      <article>
+      <article className="flex h-full flex-col">
         <div className="relative aspect-[4/5] overflow-hidden">
           <img
             src={show.image}
@@ -464,9 +465,9 @@ function ShowCard({ show, index }: { show: ShowFormat; index: number }) {
             <h3 className="text-3xl font-black text-white">{show.name}</h3>
           </div>
         </div>
-        <div className="p-5">
+        <div className="flex flex-1 flex-col p-5">
           <p className="text-sm leading-6 text-stone-300">{show.description}</p>
-          <p className="mt-5 text-xs font-black uppercase text-[#ead8a8]">
+          <p className="mt-auto pt-5 text-xs font-black uppercase text-[#ead8a8]">
             Show entdecken
           </p>
         </div>
@@ -815,7 +816,6 @@ function GallerySection() {
         <SectionHeader
           eyebrow="Galerie"
           title="Live-Momente, Bühnenenergie und grosse Bilder."
-          text="Die Galerie zeigt Gruppen- und Showfotos aus verschiedenen Auftritten. Einzelportraits bleiben bewusst in der Crew-Sektion."
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {groupGalleryImages.map((image, index) => (
@@ -971,6 +971,17 @@ function ContactSection() {
       </div>
       <ZohoBookingForm />
     </section>
+  )
+}
+
+function FloatingBookingButton() {
+  return (
+    <Link
+      href="/#kontakt"
+      className="fixed bottom-5 right-5 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-6"
+    >
+      Show buchen
+    </Link>
   )
 }
 
