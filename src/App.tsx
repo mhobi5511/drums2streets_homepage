@@ -1126,43 +1126,67 @@ function AboutPage() {
         title="Über uns"
       />
       <TextPageSection>
-        <ArticleBlock title="Drums2Streets">
+        <ArticleBlock title="Wo alles begann">
           <p>
-            Den Streetdrummern in Chicago und New York City nachempfunden,
-            trommeln Drums2Streets hauptsächlich auf Plastikeimern,
-            Regentonnen, Bauschutt und dem auf den Strassen auffindbaren Abfall,
-            der zu explosiven Instrumenten umfunktioniert wird. Was daraus
-            entsteht, lässt aufhorchen und staunen: eine abwechslungsreiche
-            Mischung aus pulsierenden Rhythmen und gekonnter
-            Schlegel-Akrobatik.
+            Der Ursprung von Drums2Streets liegt auf der Strasse. Inspiriert
+            von den Streetdrummern in Chicago und New York City entstand in
+            Kreuzlingen die Idee, aus Fundstücken mehr zu machen als Lärm:
+            Plastikeimer, Regentonnen, Bauschutt, alte Pfannen und alles, was
+            Rhythmus in sich trägt, wurden zu Instrumenten. Roh, direkt,
+            ungeschliffen und genau deshalb elektrisierend.
+          </p>
+          <p>
+            Aus dieser ersten Faszination wuchs eine eigene Sprache. Pulsierende
+            Rhythmen trafen auf Schlegel-Akrobatik, Choreografie und den Mut,
+            eine Show nicht nur zu spielen, sondern körperlich zu leben.
+            Drums2Streets war nie als gewöhnliche Trommelgruppe gedacht. Es war
+            von Anfang an der Versuch, Strassenenergie auf die Bühne zu holen.
           </p>
         </ArticleBlock>
-        <ArticleBlock title="Leidenschaftliche Trommelkunst">
+        <ArticleBlock title="Die Entstehungsgeschichte">
           <p>
-            Die neun jungen Männer und Frauen im Alter zwischen 18 und 29 Jahren
-            verbindet eine gemeinsame Leidenschaft: das Trommeln. Sie alle
-            kennen sich vom Tambourenverein Kreuzlingen, wo sie bereits als
-            Kinder das Trommeln für sich entdeckten. Die Idee zu Drums2Streets
-            stammt ursprünglich von Angelo Razzino. Er liess sich vor ein paar
-            Jahren bei einer USA-Reise von den dortigen Strassendrummern
-            inspirieren. Zu Hause präsentierte er seine Idee den
-            Trommler-Kollegen und gründete seine eigene Drummergruppe:
+            Die Wurzeln der Gruppe liegen beim Tambourenverein Kreuzlingen. Dort
+            entdeckten viele Mitglieder schon als Kinder das Trommeln, die
+            Präzision, den Groove und diese besondere Kraft, die entsteht, wenn
+            mehrere Menschen im selben Puls atmen. Die Idee zu Drums2Streets
+            stammt ursprünglich von Angelo Razzino. Auf einer USA-Reise liess er
+            sich von den dortigen Strassendrummern inspirieren, brachte den
+            Funken nach Hause und präsentierte ihn seinen Trommler-Kollegen.
+            Aus dieser Idee entstand eine eigene Drummergruppe:
             Drums2Streets war geboren. Per 2026 hat Angelo Razzino die
             Bandleitung an Marc Hobi übergeben, der Drums2Streets heute als
             Bandleader weiterführt.
           </p>
         </ArticleBlock>
-        <ArticleBlock title="Von NYC nach Kreuzlingen">
+        <ArticleBlock title="Vom Ursprung in die nächste Ära">
           <p>
-            Wie ihre Vorbilder in New York City spielen auch die innovativen
-            Kreuzlinger auf Abfall. Ob alte Pfannen, Regentonnen oder
-            Umhängetrommeln: sie bauen alle Instrumente selber und entwickeln
-            immer wieder neue Ideen. Gemeinsam entstand auch die Idee zum
-            abendfüllenden Programm “Roads of America”, das aus den drei Shows
-            “New York”, “Wild West” und “Las Vegas” besteht. Mit dem
-            Tourneeprogramm “Roads of America” wagen die neun Drummer den
-            nächsten grossen Schritt und beweisen, dass Trommeln eben doch sexy
-            ist.
+            Diese Geschichte ist unser Fundament. Sie erklärt, woher
+            Drums2Streets kommt: aus der Lust am Experiment, aus Freundschaft,
+            aus Trommelkunst und aus dem Glauben, dass eine Regentonne mit der
+            richtigen Energie eine ganze Halle zum Kochen bringen kann. Heute
+            hat sich die Gruppe weiterentwickelt. Neue Menschen, neue Ideen und
+            ein neuer Hunger treiben Drums2Streets nach vorne.
+          </p>
+          <p>
+            2026 markiert für uns eine Art Relaunch. Nicht als Bruch mit dem,
+            was war, sondern als nächster, grösserer Schritt. Wir nehmen den
+            Ursprung mit, schärfen die Shows, bauen weiter, suchen neue
+            Bühnenmomente und gehen mit dem Anspruch raus, jedes Publikum zu
+            überraschen. Drums2Streets ist heute hungriger denn je.
+          </p>
+          <p>
+            Und genau deshalb sind wir offen für Verstärkung. Wer Rhythmus im
+            Blut hat, Bühnenenergie liebt und Teil dieser nächsten Ära werden
+            möchte, ist willkommen. Neue Mitglieder, Mitdenkerinnen und
+            Mitdenker, Macherinnen und Macher: Meldet euch gerne direkt per
+            Mail an{' '}
+            <a
+              className="font-bold text-[#ead8a8] underline decoration-[#8f6b32] underline-offset-4 transition hover:text-white"
+              href="mailto:marc.hobi@d2s.ch"
+            >
+              marc.hobi@d2s.ch
+            </a>
+            .
           </p>
         </ArticleBlock>
       </TextPageSection>
