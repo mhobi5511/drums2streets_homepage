@@ -226,15 +226,22 @@ function navigateTo(path: string) {
   const url = new URL(path, window.location.origin)
   window.history.pushState({}, '', `${url.pathname}${url.hash}`)
   window.dispatchEvent(new PopStateEvent('popstate'))
+  scrollToCurrentTarget()
+}
 
-  if (url.hash) {
+function scrollToCurrentTarget() {
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      document.querySelector(url.hash)?.scrollIntoView({ behavior: 'smooth' })
-    })
-    return
-  }
+      if (window.location.hash) {
+        document
+          .querySelector(window.location.hash)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
 
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.scrollTo({ left: 0, top: 0, behavior: 'auto' })
+    })
+  })
 }
 
 function checkMandatory(event: FormEvent<HTMLFormElement>) {
@@ -259,11 +266,13 @@ function Link({
   className,
   children,
   ariaLabel,
+  dataFloatingCta,
 }: {
   href: string
   className?: string
   children: ReactNode
   ariaLabel?: string
+  dataFloatingCta?: boolean
 }) {
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     if (href.startsWith('/')) {
@@ -273,7 +282,13 @@ function Link({
   }
 
   return (
-    <a aria-label={ariaLabel} className={className} href={href} onClick={handleClick}>
+    <a
+      aria-label={ariaLabel}
+      className={className}
+      data-floating-cta={dataFloatingCta ? true : undefined}
+      href={href}
+      onClick={handleClick}
+    >
       {children}
     </a>
   )
@@ -312,11 +327,11 @@ function Header() {
     <header className="flex flex-col gap-3 lg:flex-row lg:items-center">
       <div className="flex items-center justify-between overflow-visible lg:flex lg:h-[96px] lg:shrink-0 lg:items-center">
           <Link href="/" className="inline-flex items-center" ariaLabel="Drums2Streets">
-          <span className="relative flex h-20 w-52 items-center justify-center overflow-visible sm:h-24 sm:w-64 lg:h-[96px] lg:w-72">
+          <span className="relative flex h-16 w-[33vw] max-w-[33vw] items-center justify-center overflow-visible sm:h-24 sm:w-64 sm:max-w-none lg:h-[96px] lg:w-72">
               <img
                 src={logoImage}
                 alt="Drums2Streets"
-              className="absolute top-1/2 h-28 w-72 max-w-none -translate-y-[42%] object-contain sm:h-36 sm:w-96 lg:h-36 lg:w-[28rem]"
+              className="absolute top-1/2 h-20 w-full max-w-full -translate-y-[42%] object-contain sm:h-36 sm:w-96 sm:max-w-none lg:h-36 lg:w-[28rem]"
               />
             </span>
           </Link>
@@ -395,7 +410,28 @@ function PageShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     function updateFloatingButtons() {
       const isDesktop = window.matchMedia('(min-width: 640px)').matches
-      setShowFloatingButtons(isDesktop || window.scrollY > window.innerHeight * 0.9)
+      const visibleInlineCta = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>('a[href="/#kontakt"]:not([data-floating-cta])'),
+      ).some((link) => {
+        const styles = window.getComputedStyle(link)
+        const rect = link.getBoundingClientRect()
+        const isRendered =
+          styles.display !== 'none' &&
+          styles.visibility !== 'hidden' &&
+          Number(styles.opacity) !== 0 &&
+          rect.width > 0 &&
+          rect.height > 0
+
+        return (
+          isRendered &&
+          rect.bottom > 0 &&
+          rect.right > 0 &&
+          rect.top < window.innerHeight &&
+          rect.left < window.innerWidth
+        )
+      })
+
+      setShowFloatingButtons(isDesktop || !visibleInlineCta)
     }
 
     updateFloatingButtons()
@@ -809,7 +845,7 @@ function ShowsSection() {
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           eyebrow="Showformate"
-          title="Drei Welten, ein kompromissloser Puls."
+          title="Vier Welten, ein kompromissloser Puls."
           text="Jedes Format ist als starker Programmpunkt, Opening, Highlight oder Überraschungsmoment einsetzbar."
         />
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -1018,6 +1054,7 @@ function FloatingBookingButton({ visible }: { visible: boolean }) {
   return (
     <Link
       href="/#kontakt"
+      dataFloatingCta
       className={`fixed bottom-5 right-20 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-24 ${
         visible
           ? 'translate-y-0 opacity-100'
@@ -1230,11 +1267,17 @@ function App() {
   useEffect(() => {
     function handlePopState() {
       setRoute(getPath())
+      scrollToCurrentTarget()
     }
 
+    window.history.scrollRestoration = 'manual'
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
+
+  useEffect(() => {
+    scrollToCurrentTarget()
+  }, [route])
 
   const currentShow = showFormats.find((show) => show.path === route)
 
