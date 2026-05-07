@@ -1,5 +1,5 @@
 import type { FormEvent, MouseEvent, ReactNode } from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import logoImage from './assets/D2S_Logo_braun-1.png'
 import heroImage from './assets/D2S Wild West.jpg'
 import saloonImage from './assets/D2S Saloon.jpg'
@@ -1273,6 +1273,7 @@ function Footer() {
 
 function App() {
   const [route, setRoute] = useState<RoutePath>(getPath)
+  const initialScrollHandled = useRef(false)
 
   useEffect(() => {
     function handlePopState() {
@@ -1286,6 +1287,12 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (!initialScrollHandled.current) {
+      initialScrollHandled.current = true
+      window.scrollTo({ left: 0, top: 0, behavior: 'auto' })
+      return
+    }
+
     scrollToCurrentTarget()
   }, [route])
 
