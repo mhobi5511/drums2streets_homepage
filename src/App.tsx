@@ -305,7 +305,7 @@ function Header() {
             href="/#kontakt"
             className="rounded-md bg-[#8f6b32] px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#8f6b32]/30 transition hover:bg-[#b99b5d] sm:hidden"
           >
-            Anfrage
+            Show buchen
           </Link>
       </div>
 
@@ -342,7 +342,7 @@ function Header() {
           href="/#kontakt"
           className="hidden rounded-md bg-[#8f6b32] px-5 py-3 text-xs font-black uppercase text-white shadow-lg shadow-[#8f6b32]/30 transition hover:bg-[#b99b5d] lg:inline-flex"
         >
-          Anfrage
+          Show buchen
         </Link>
       </div>
     </header>
@@ -649,7 +649,7 @@ function HomePage() {
                 href="/#kontakt"
                 className="inline-flex justify-center rounded-md bg-[#8f6b32] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#8f6b32]/35 transition hover:bg-[#b99b5d]"
               >
-                Anfrage starten
+                Show buchen
               </Link>
               <Link
                 href="/shows/wild-west"
@@ -926,7 +926,7 @@ function ContactCta() {
           href="/#kontakt"
           className="inline-flex justify-center rounded-md bg-[#8f6b32] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#8f6b32]/25 transition hover:bg-[#b99b5d]"
         >
-          Anfrage starten
+          Buche deine Show
         </Link>
       </div>
     </section>
@@ -1031,7 +1031,7 @@ function ShowPage({ show }: { show: ShowFormat }) {
             href="/#kontakt"
             className="inline-flex justify-center rounded-md bg-[#8f6b32] px-7 py-5 text-sm font-black uppercase text-white shadow-2xl shadow-[#8f6b32]/25 transition hover:bg-[#b99b5d]"
           >
-            Show anfragen
+            Buche diese Show
           </Link>
           <Link
             href="/#shows"
