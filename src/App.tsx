@@ -409,7 +409,21 @@ function PageShell({ children }: { children: ReactNode }) {
   const [showScrollToTopButton, setShowScrollToTopButton] = useState(false)
 
   useEffect(() => {
+    function updateVisualViewportBottom() {
+      const visualViewport = window.visualViewport
+      const bottomInset = visualViewport
+        ? Math.max(0, window.innerHeight - visualViewport.height - visualViewport.offsetTop)
+        : 0
+
+      document.documentElement.style.setProperty(
+        '--visual-viewport-bottom',
+        `${bottomInset}px`,
+      )
+    }
+
     function updateFloatingButtons() {
+      updateVisualViewportBottom()
+
       const isDesktop = window.matchMedia('(min-width: 640px)').matches
       const contactSection = document.getElementById('kontakt')
       const contactRect = contactSection?.getBoundingClientRect()
@@ -447,10 +461,14 @@ function PageShell({ children }: { children: ReactNode }) {
     updateFloatingButtons()
     window.addEventListener('scroll', updateFloatingButtons, { passive: true })
     window.addEventListener('resize', updateFloatingButtons)
+    window.visualViewport?.addEventListener('scroll', updateFloatingButtons, { passive: true })
+    window.visualViewport?.addEventListener('resize', updateFloatingButtons)
 
     return () => {
       window.removeEventListener('scroll', updateFloatingButtons)
       window.removeEventListener('resize', updateFloatingButtons)
+      window.visualViewport?.removeEventListener('scroll', updateFloatingButtons)
+      window.visualViewport?.removeEventListener('resize', updateFloatingButtons)
     }
   }, [])
 
@@ -1065,7 +1083,7 @@ function FloatingBookingButton({ visible }: { visible: boolean }) {
     <Link
       href="/#kontakt"
       dataFloatingCta
-      className={`fixed bottom-5 right-20 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-24 ${
+      className={`fixed bottom-[calc(var(--visual-viewport-bottom,0px)+env(safe-area-inset-bottom)+1.25rem)] right-20 z-50 rounded-md border border-white/10 bg-[#8f6b32] px-5 py-4 text-xs font-black uppercase text-white shadow-2xl shadow-black/50 transition hover:bg-[#b99b5d] sm:bottom-6 sm:right-24 ${
         visible
           ? 'translate-y-0 opacity-100'
           : 'pointer-events-none translate-y-4 opacity-0 sm:pointer-events-auto sm:translate-y-0 sm:opacity-100'
@@ -1084,7 +1102,7 @@ function ScrollToTopButton({ visible }: { visible: boolean }) {
   return (
     <button
       aria-label="Nach oben scrollen"
-      className={`fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-md border border-white/10 bg-black/75 text-lg font-black text-white shadow-2xl shadow-black/50 transition hover:border-[#b99b5d] hover:text-[#ead8a8] sm:bottom-6 sm:right-6 ${
+      className={`fixed bottom-[calc(var(--visual-viewport-bottom,0px)+env(safe-area-inset-bottom)+1.25rem)] right-5 z-50 grid h-12 w-12 place-items-center rounded-md border border-white/10 bg-black/75 text-lg font-black text-white shadow-2xl shadow-black/50 transition hover:border-[#b99b5d] hover:text-[#ead8a8] sm:bottom-6 sm:right-6 ${
         visible
           ? 'translate-y-0 opacity-100'
           : 'pointer-events-none translate-y-4 opacity-0 sm:pointer-events-auto sm:translate-y-0 sm:opacity-100'
