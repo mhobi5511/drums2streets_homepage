@@ -1140,7 +1140,24 @@ function Footer() {
             className="h-16 w-fit object-contain drop-shadow-2xl"
           />
         </Link>
-        <p>Premium Drum Shows aus der Schweiz</p>
+        <div className="flex gap-3 text-xs font-black uppercase text-stone-300">
+          <a
+            className="rounded-md border border-white/10 px-4 py-3 transition hover:border-[#b99b5d] hover:text-[#ead8a8]"
+            href="https://www.facebook.com/drums2streets/?locale=de_DE"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Facebook
+          </a>
+          <a
+            className="rounded-md border border-white/10 px-4 py-3 transition hover:border-[#b99b5d] hover:text-[#ead8a8]"
+            href="https://www.instagram.com/drums2streets_show/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Instagram
+          </a>
+        </div>
       </div>
     </footer>
   )
