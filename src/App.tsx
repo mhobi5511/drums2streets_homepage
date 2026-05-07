@@ -1132,7 +1132,7 @@ function ArticleBlock({
 function Footer() {
   return (
     <footer className="border-t border-white/10 px-5 py-8 text-sm text-stone-500 sm:px-8 lg:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-3 sm:items-center">
         <Link href="/" className="inline-flex w-fit">
           <img
             src={logoImage}
@@ -1140,24 +1140,37 @@ function Footer() {
             className="h-16 w-fit object-contain drop-shadow-2xl"
           />
         </Link>
-        <div className="flex gap-3 text-xs font-black uppercase text-stone-300">
+        <div className="flex justify-center gap-4 text-stone-300">
           <a
-            className="rounded-md border border-white/10 px-4 py-3 transition hover:border-[#b99b5d] hover:text-[#ead8a8]"
+            aria-label="Drums2Streets auf Facebook"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 transition hover:border-[#b99b5d] hover:text-[#ead8a8]"
             href="https://www.facebook.com/drums2streets/?locale=de_DE"
             rel="noreferrer"
             target="_blank"
           >
-            Facebook
+            <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24">
+              <path
+                d="M14.2 8.4V6.9c0-.7.5-.9.9-.9h2.1V2.4l-3-.1c-3.3 0-4 2-4 3.9v2.2H7.6V12h2.6v9.7h4V12h3l.5-3.6h-3.5Z"
+                fill="currentColor"
+              />
+            </svg>
           </a>
           <a
-            className="rounded-md border border-white/10 px-4 py-3 transition hover:border-[#b99b5d] hover:text-[#ead8a8]"
+            aria-label="Drums2Streets auf Instagram"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 transition hover:border-[#b99b5d] hover:text-[#ead8a8]"
             href="https://www.instagram.com/drums2streets_show/"
             rel="noreferrer"
             target="_blank"
           >
-            Instagram
+            <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24">
+              <path
+                d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9a4.7 4.7 0 0 1-4.7-4.7v-9a4.7 4.7 0 0 1 4.7-4.7Zm0 2A2.7 2.7 0 0 0 4.8 7.5v9a2.7 2.7 0 0 0 2.7 2.7h9a2.7 2.7 0 0 0 2.7-2.7v-9a2.7 2.7 0 0 0-2.7-2.7h-9Zm4.5 3.3a3.9 3.9 0 1 1 0 7.8 3.9 3.9 0 0 1 0-7.8Zm0 2a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8Zm4.2-2.8a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z"
+                fill="currentColor"
+              />
+            </svg>
           </a>
         </div>
+        <div className="hidden sm:block" />
       </div>
     </footer>
   )
